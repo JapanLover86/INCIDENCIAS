@@ -15,6 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Pages\PagesUsuario\" />
+    <Folder Include="Components\Pages\PagesHistorial\" />
+    <Folder Include="Components\Pages\PagesRecursos\" />
+    <Folder Include="Components\Pages\PagesLaboratorio\" />
+    <Folder Include="Components\Pages\PagesEquipos\" />
+    <Folder Include="Components\Pages\PagesAsignacion\" />
     <Folder Include="Extensiones\" />
     <Folder Include="Servicios\Notificaciones\" />
     <Folder Include="VistaModelo\" />
