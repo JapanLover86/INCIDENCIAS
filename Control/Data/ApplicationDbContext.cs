@@ -9,7 +9,7 @@ namespace Control.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<AsignacionRecursos> asignacionRecursos { get; set; }
-        public DbSet<Equipos> Equipos { get; set; }
+        public DbSet<Equipos> equipos { get; set; }
         public DbSet<HistorialIncidencias> historialIncidencias { get; set; }
         public object HistorialIncidencias { get; internal set; }
         public DbSet<Incidencias> incidencias { get; set; }
