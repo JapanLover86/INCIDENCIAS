@@ -15,6 +15,7 @@ namespace Control.Data
         public DbSet<Incidencias> incidencias { get; set; }
         public DbSet<Laboratorios> laboratorios { get; set; }
         public DbSet<Recursos> recursos { get; set; }
+        public object Recursos { get; internal set; }
         public DbSet<Usuario> usuarios { get; set; }
         public object Usuarios { get; internal set; }
 
