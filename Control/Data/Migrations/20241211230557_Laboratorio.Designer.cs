@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Control.Migrations
 {
     [DbContext(typeof(AplicacionDbContext))]
-    [Migration("20241211220457_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241211230557_Laboratorio")]
+    partial class Laboratorio
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,27 +41,36 @@ namespace Control.Migrations
                     b.Property<int>("IdRecursos")
                         .HasColumnType("int");
 
+                    b.Property<int>("IncidenciasIdIncidencias")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RecursosIdRecursos")
+                        .HasColumnType("int");
+
                     b.HasKey("IdAsignacion");
 
-                    b.HasIndex("IdIncidencias");
+                    b.HasIndex("IncidenciasIdIncidencias");
 
-                    b.HasIndex("IdRecursos");
+                    b.HasIndex("RecursosIdRecursos");
 
                     b.ToTable("asignacionRecursos");
                 });
 
             modelBuilder.Entity("Control.Data.Entidades.Equipos", b =>
                 {
-                    b.Property<int>("IdEquipos")
+                    b.Property<int?>("IdEquipos")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEquipos"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("IdEquipos"));
 
                     b.Property<DateTime>("FechaInst")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IdLaboratorio")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LaboratorioIdLaboratorio")
                         .HasColumnType("int");
 
                     b.Property<string>("Modelo")
@@ -76,7 +85,7 @@ namespace Control.Migrations
 
                     b.HasKey("IdEquipos");
 
-                    b.HasIndex("IdLaboratorio");
+                    b.HasIndex("LaboratorioIdLaboratorio");
 
                     b.ToTable("equipos");
                 });
@@ -102,6 +111,9 @@ namespace Control.Migrations
                     b.Property<int>("IdIncidencias")
                         .HasColumnType("int");
 
+                    b.Property<int>("IncidenciasIdIncidencias")
+                        .HasColumnType("int");
+
                     b.Property<string>("UsuarioResponsable")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -109,7 +121,7 @@ namespace Control.Migrations
 
                     b.HasKey("IdHistorial");
 
-                    b.HasIndex("IdIncidencias");
+                    b.HasIndex("IncidenciasIdIncidencias");
 
                     b.ToTable("historialIncidencias");
                 });
@@ -127,10 +139,13 @@ namespace Control.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int>("EquiposIdEquipos")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("FechaReporte")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("FechaSolucion")
+                    b.Property<DateTime>("FechaSolucion")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("IdEquipos")
@@ -142,24 +157,30 @@ namespace Control.Migrations
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
+                    b.Property<int>("LaboratorioIdLaboratorio")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioIdUsuario")
+                        .HasColumnType("int");
+
                     b.HasKey("IdIncidencias");
 
-                    b.HasIndex("IdEquipos");
+                    b.HasIndex("EquiposIdEquipos");
 
-                    b.HasIndex("IdLaboratorio");
+                    b.HasIndex("LaboratorioIdLaboratorio");
 
-                    b.HasIndex("IdUsuario");
+                    b.HasIndex("UsuarioIdUsuario");
 
                     b.ToTable("incidencias");
                 });
 
             modelBuilder.Entity("Control.Data.Entidades.Laboratorios", b =>
                 {
-                    b.Property<int>("IdLaboratorio")
+                    b.Property<int?>("IdLaboratorio")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdLaboratorio"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("IdLaboratorio"));
 
                     b.Property<int>("Capacidad")
                         .HasColumnType("int");
@@ -177,6 +198,15 @@ namespace Control.Migrations
                     b.HasKey("IdLaboratorio");
 
                     b.ToTable("laboratorios");
+
+                    b.HasData(
+                        new
+                        {
+                            IdLaboratorio = 23532,
+                            Capacidad = 34,
+                            NombreLab = "LAB-01",
+                            Ubicacion = "Upla-Huancayo"
+                        });
                 });
 
             modelBuilder.Entity("Control.Data.Entidades.Recursos", b =>
@@ -239,14 +269,14 @@ namespace Control.Migrations
                 {
                     b.HasOne("Control.Data.Entidades.Incidencias", "Incidencias")
                         .WithMany("AsignacionRecursos")
-                        .HasForeignKey("IdIncidencias")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("IncidenciasIdIncidencias")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Control.Data.Entidades.Recursos", "Recursos")
                         .WithMany("AsignacionRecursos")
-                        .HasForeignKey("IdRecursos")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("RecursosIdRecursos")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Incidencias");
@@ -258,8 +288,8 @@ namespace Control.Migrations
                 {
                     b.HasOne("Control.Data.Entidades.Laboratorios", "Laboratorio")
                         .WithMany("Equipos")
-                        .HasForeignKey("IdLaboratorio")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("LaboratorioIdLaboratorio")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Laboratorio");
@@ -269,8 +299,8 @@ namespace Control.Migrations
                 {
                     b.HasOne("Control.Data.Entidades.Incidencias", "Incidencias")
                         .WithMany("HistorialIncidencias")
-                        .HasForeignKey("IdIncidencias")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("IncidenciasIdIncidencias")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Incidencias");
@@ -280,20 +310,20 @@ namespace Control.Migrations
                 {
                     b.HasOne("Control.Data.Entidades.Equipos", "Equipos")
                         .WithMany("Incidencias")
-                        .HasForeignKey("IdEquipos")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("EquiposIdEquipos")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Control.Data.Entidades.Laboratorios", "Laboratorio")
                         .WithMany("Incidencias")
-                        .HasForeignKey("IdLaboratorio")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("LaboratorioIdLaboratorio")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Control.Data.Entidades.Usuario", "Usuario")
                         .WithMany("Incidencias")
-                        .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("UsuarioIdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Equipos");

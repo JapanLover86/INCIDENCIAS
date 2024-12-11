@@ -8,7 +8,7 @@ namespace Control.Data.Entidades
         public int IdHistorial { get; set; }
 
         [Required]
-        public int IdIncidencias { get; set; }
+        public int? IdIncidencias { get; set; }
         public Incidencias Incidencias { get; set; }
 
         [Required]

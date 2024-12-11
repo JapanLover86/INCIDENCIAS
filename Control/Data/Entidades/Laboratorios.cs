@@ -6,7 +6,7 @@ namespace Control.Data.Entidades
     {
 
         [Key]
-        public int IdLaboratorio { get; set; }
+        public int? IdLaboratorio { get; set; }
 
         [Required]
         [MaxLength(100)]

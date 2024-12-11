@@ -5,7 +5,7 @@ namespace Control.Data.Entidades
     public class Equipos
     {
         [Key]
-        public int IdEquipos { get; set; }
+        public int? IdEquipos { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -18,7 +18,7 @@ namespace Control.Data.Entidades
         public DateTime FechaInst { get; set; }
 
         [Required]
-        public int IdLaboratorio { get; set; }
+        public int? IdLaboratorio { get; set; }
         public Laboratorios Laboratorio { get; set; }
 
         public ICollection<Incidencias> Incidencias { get; set; }

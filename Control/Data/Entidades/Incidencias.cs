@@ -17,15 +17,15 @@ namespace Control.Data.Entidades
         public DateTime FechaSolucion { get; set; }
 
         [Required]
-        public int IdUsuario { get; set; }
+        public int? IdUsuario { get; set; }
         public Usuario Usuario { get; set; }
 
         [Required]
-        public int IdLaboratorio { get; set; }
+        public int? IdLaboratorio { get; set; }
         public Laboratorios Laboratorio { get; set; }
 
         [Required]
-        public int IdEquipos { get; set; }
+        public int? IdEquipos { get; set; }
         public Equipos Equipos { get; set; }
 
         public ICollection<AsignacionRecursos> AsignacionRecursos { get; set; }

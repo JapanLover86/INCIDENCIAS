@@ -16,19 +16,16 @@ public class AplicacionDbContext : DbContext
     public DbSet<Laboratorios> laboratorios { get; set; }
     public DbSet<Recursos> recursos { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder Builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(Builder);
-
-        //tabla laboratorio
+        base.OnModelCreating(modelBuilder);
 
 
-        Builder.Entity<Laboratorios>().HasData(
+        modelBuilder.Entity<Laboratorios>().HasData(
             
-            new Laboratorios { IdLaboratorio = 435642, Capacidad = 24, NombreLab = "Lab-01", Ubicacion ="Pabellón I" }
+            new Laboratorios { IdLaboratorio = 23532, NombreLab = "LAB-01", Capacidad = 34, Ubicacion = "Upla-Huancayo", Incidencias = null, Equipos = null}
+
             
             );
-
-
     }
 }
