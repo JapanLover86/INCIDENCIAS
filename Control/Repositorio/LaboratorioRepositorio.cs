@@ -8,10 +8,10 @@ namespace Control.Repositorio
 {
     public class LaboratorioRepositorio : ILaboratoriosRepositorio
     {
-        private readonly ApplicationDbContext contextoDb;
+        private readonly AplicacionDbContext contextoDb;
         
 
-        public LaboratorioRepositorio(ApplicationDbContext dbContext)
+        public LaboratorioRepositorio(AplicacionDbContext dbContext)
         {
             contextoDb = dbContext;
                 

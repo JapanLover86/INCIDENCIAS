@@ -6,9 +6,9 @@ namespace Control.Repositorio
 {
     public class AsignacionrecursosRepositorio : IAsignacionrecursosRepositorio
     {
-        public readonly ApplicationDbContext contextodb;
+        public readonly AplicacionDbContext contextodb;
 
-        public AsignacionrecursosRepositorio(ApplicationDbContext dbContext)
+        public AsignacionrecursosRepositorio(AplicacionDbContext dbContext)
         {
             contextodb = dbContext;
             
@@ -62,7 +62,7 @@ namespace Control.Repositorio
             var modificarRecurso = await contextodb.asignacionRecursos.FirstOrDefaultAsync(c => c.IdRecursos == asignacionRecursos.IdRecursos);
             if(modificarRecurso is not null)
             {
-                asignacionRecursos.cantidadUtilizada = modificarRecurso.cantidadUtilizada;
+                asignacionRecursos.CantidadUtilizada = modificarRecurso.CantidadUtilizada;
                 contextodb.asignacionRecursos.Update(asignacionRecursos);   
                 return modificarRecurso;
             }

@@ -6,8 +6,8 @@ namespace Control.Repositorio
 {
     public class IncidenciasRepositorio : IIncidenciasRepositorio
     {
-        public readonly ApplicationDbContext contextodb;
-        public IncidenciasRepositorio(ApplicationDbContext dbContext)
+        public readonly AplicacionDbContext contextodb;
+        public IncidenciasRepositorio(AplicacionDbContext dbContext)
         {
             contextodb = dbContext;
         }
@@ -44,7 +44,7 @@ namespace Control.Repositorio
             return await contextodb.incidencias
             .Include(i => i.Equipos)
             .Include(i => i.Usuario)
-            .Include(i => i.Laboratorios)
+            .Include(i => i.Laboratorio)
             .ToListAsync();
         }
 
@@ -65,7 +65,7 @@ namespace Control.Repositorio
             var modifcarInciddencias = await contextodb.incidencias.FirstOrDefaultAsync(i => i.IdIncidencias == incidencias.IdIncidencias);
             if (modifcarInciddencias is not null)
             {
-                incidencias.descInc = modifcarInciddencias.descInc;
+                incidencias.DescInc = modifcarInciddencias.DescInc;
                 await contextodb.SaveChangesAsync();
                 return incidencias;
             }

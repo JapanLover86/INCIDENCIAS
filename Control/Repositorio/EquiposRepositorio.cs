@@ -6,8 +6,8 @@ namespace Control.Repositorio
 {
     public class EquiposRepositorio : IEquiposRepositorio
     {
-        public readonly ApplicationDbContext contextodb;
-        public EquiposRepositorio(ApplicationDbContext dbContext)
+        public readonly AplicacionDbContext contextodb;
+        public EquiposRepositorio(AplicacionDbContext dbContext)
         {
             contextodb = dbContext;
         }

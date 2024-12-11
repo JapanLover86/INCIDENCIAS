@@ -9,9 +9,9 @@ namespace Control.Repositorio
 
     public class RecursosRepositorio : IRecursosRepositorio
     {
-        public readonly ApplicationDbContext contextodb;
+        public readonly AplicacionDbContext contextodb;
 
-        public RecursosRepositorio(ApplicationDbContext dbContext)
+        public RecursosRepositorio(AplicacionDbContext dbContext)
         {
             contextodb = dbContext;
         }
@@ -64,9 +64,9 @@ namespace Control.Repositorio
             // Si el recurso existe, se actualiza
             if (modificarRecurso != null)
             {
-                modificarRecurso.nombreRec = recursos.nombreRec;
-                modificarRecurso.desRec = recursos.desRec;
-                modificarRecurso.cantidad = recursos.cantidad;
+                modificarRecurso.NombreRec = recursos.NombreRec;
+                modificarRecurso.DesRec = recursos.DesRec;
+                modificarRecurso.AsignacionRecursos = recursos.AsignacionRecursos;
 
                 // Se actualiza el recurso en la base de datos
                 contextodb.recursos.Update(modificarRecurso);

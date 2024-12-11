@@ -8,9 +8,9 @@ namespace Control.Repositorio
 {
     public class HistorialRepositorio : IHistorialRepositorio
     {
-        public readonly ApplicationDbContext contextodb;
+        public readonly AplicacionDbContext contextodb;
 
-        public HistorialRepositorio(ApplicationDbContext dbContext)
+        public HistorialRepositorio(AplicacionDbContext dbContext)
         {
             contextodb = dbContext;
         }
