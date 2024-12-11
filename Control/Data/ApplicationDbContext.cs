@@ -1,6 +1,7 @@
 
 using Control.Data.Entidades;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 public class AplicacionDbContext : DbContext
 {
@@ -24,18 +25,10 @@ public class AplicacionDbContext : DbContext
 
         Builder.Entity<Laboratorios>().HasData(
             
-            new Laboratorios { IdLaboratorio = 456723, Incidencias= null, NombreLab = "Lab01" , Capacidad = 30, Ubicacion = "Huancayo-upla" , Equipos = null }
-            
+            new Laboratorios { IdLaboratorio = 435642, Capacidad = 24, NombreLab = "Lab-01", Ubicacion ="Pabellón I" }
             
             );
 
-        Builder.Entity<Equipos>().HasData(
-            
-            new Equipos {  IdEquipos = 346512, FechaInst = new DateTime(2024, 12, 11), Modelo = "Lenovo-01", NombreEquipos = "PC-01", Laboratorio = null, IdLaboratorio = 456723, Incidencias = }
-            
-            
-            );
-        
 
     }
 }
