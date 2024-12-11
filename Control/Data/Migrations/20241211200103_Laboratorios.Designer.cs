@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Control.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(AplicacionDbContext))]
     [Migration("20241211200103_Laboratorios")]
     partial class Laboratorios
     {

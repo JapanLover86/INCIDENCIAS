@@ -14,7 +14,7 @@ namespace Control.Data.Entidades
         [Required]
         public DateTime FechaReporte { get; set; }
 
-        public DateTime? FechaSolucion { get; set; }
+        public DateTime FechaSolucion { get; set; }
 
         [Required]
         public int IdUsuario { get; set; }

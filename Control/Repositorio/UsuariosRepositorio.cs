@@ -6,9 +6,9 @@ namespace Control.Repositorio
 {
     public class UsuariosRepositorio : IUsuarioRepositorio
     {
-        public readonly ApplicationDbContext contextodb;
+        public readonly AplicacionDbContext contextodb;
 
-        public UsuariosRepositorio(ApplicationDbContext dbContext)
+        public UsuariosRepositorio(AplicacionDbContext dbContext)
         {
             contextodb = dbContext;
         }

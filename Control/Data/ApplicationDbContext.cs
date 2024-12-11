@@ -1,4 +1,4 @@
-// DbContext configurado para SQL Server
+
 using Control.Data.Entidades;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,56 +15,27 @@ public class AplicacionDbContext : DbContext
     public DbSet<Laboratorios> laboratorios { get; set; }
     public DbSet<Recursos> recursos { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder Builder)
     {
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(Builder);
 
-        // Configuraciones adicionales si son necesarias
+        //tabla laboratorio
 
-        // Relación Usuario - Incidencias (1:N)
-        modelBuilder.Entity<Incidencias>()
-            .HasOne(i => i.Usuario)
-            .WithMany(u => u.Incidencias)
-            .HasForeignKey(i => i.IdUsuario);
 
-        // Relación Laboratorio - Equipos (1:N)
-        modelBuilder.Entity<Equipos>()
-            .HasOne(e => e.Laboratorio)
-            .WithMany(l => l.Equipos)
-            .HasForeignKey(e => e.IdLaboratorio);
+        Builder.Entity<Laboratorios>().HasData(
+            
+            new Laboratorios { IdLaboratorio = 456723, Incidencias= null, NombreLab = "Lab01" , Capacidad = 30, Ubicacion = "Huancayo-upla" , Equipos = null }
+            
+            
+            );
 
-        // Relación Incidencias - Equipos (1:N)
-        modelBuilder.Entity<Incidencias>()
-            .HasOne(i => i.Equipos)
-            .WithMany(e => e.Incidencias)
-            .HasForeignKey(i => i.IdEquipos);
+        Builder.Entity<Equipos>().HasData(
+            
+            new Equipos {  IdEquipos = 346512, FechaInst = new DateTime(2024, 12, 11), Modelo = "Lenovo-01", NombreEquipos = "PC-01", Laboratorio = null, IdLaboratorio = 456723, Incidencias = }
+            
+            
+            );
+        
 
-        // Relación Incidencias - Laboratorios (1:N)
-        modelBuilder.Entity<Incidencias>()
-            .HasOne(i => i.Laboratorio)
-            .WithMany(l => l.Incidencias)
-            .HasForeignKey(i => i.IdLaboratorio);
-
-        // Relación AsignacionRecursos - Recursos (1:N)
-        modelBuilder.Entity<AsignacionRecursos>()
-            .HasOne(a => a.Recursos)
-            .WithMany(r => r.AsignacionRecursos)
-            .HasForeignKey(a => a.IdRecursos);
-
-        // Relación AsignacionRecursos - Incidencias (1:N)
-        modelBuilder.Entity<AsignacionRecursos>()
-            .HasOne(a => a.Incidencias)
-            .WithMany(i => i.AsignacionRecursos)
-            .HasForeignKey(a => a.IdIncidencias);
-
-        // Relación HistorialIncidencias - Incidencias (1:N)
-        modelBuilder.Entity<HistorialIncidencias>()
-            .HasOne(h => h.Incidencias)
-            .WithMany(i => i.HistorialIncidencias)
-            .HasForeignKey(h => h.IdIncidencias);
-
-        // Configuración de campos con restricciones adicionales
-        modelBuilder.Entity<Usuario>().Property(u => u.CorreoUsuario).HasMaxLength(100).IsRequired();
-        modelBuilder.Entity<Laboratorios>().Property(l => l.NombreLab).HasMaxLength(100).IsRequired();
     }
 }
