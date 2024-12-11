@@ -1,4 +1,6 @@
-﻿using Control.Data.Entidades;
+﻿using Control.Data;
+using Control.Data.Entidades;
+using Microsoft.EntityFrameworkCore;
 
 namespace Control.Repositorio
 {

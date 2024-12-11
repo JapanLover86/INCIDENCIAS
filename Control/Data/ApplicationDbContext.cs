@@ -16,6 +16,7 @@ namespace Control.Data
         public DbSet<Laboratorios> laboratorios { get; set; }
         public DbSet<Recursos> recursos { get; set; }
         public DbSet<Usuario> usuarios { get; set; }
+        public object Usuarios { get; internal set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
