@@ -64,9 +64,9 @@ namespace Control.Repositorio
             // Si el recurso existe, se actualiza
             if (modificarRecurso != null)
             {
-                modificarRecurso.Nombre = recursos.Nombre;
-                modificarRecurso.Descripcion = recursos.Descripcion;
-                modificarRecurso.CantidadDisponible = recursos.CantidadDisponible;
+                modificarRecurso.nombreRec = recursos.nombreRec;
+                modificarRecurso.desRec = recursos.desRec;
+                modificarRecurso.cantidad = recursos.cantidad;
 
                 // Se actualiza el recurso en la base de datos
                 contextodb.recursos.Update(modificarRecurso);
