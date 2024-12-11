@@ -55,9 +55,23 @@ namespace Control.Repositorio
             return (IEnumerable<Usuario>)usuario;
         }
 
-        public Task<Usuario> Modificar(Usuario usuario)
+        public async Task<Usuario> Modificar(Usuario usuario)
         {
-            throw new NotImplementedException();
+            var modificarUsuario = await contextodb.usuarios.FirstOrDefaultAsync(u => u.IdUsuario == usuario.IdUsuario);
+            if(modificarUsuario == null)
+            {
+                throw new KeyNotFoundException($"No se encontró un usuario con el ID");
+            }
+            try
+            {
+                contextodb.usuarios.Update(usuario);
+                await contextodb.SaveChangesAsync();
+                return usuario;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Error al modificar el usuario con ID {usuario.IdUsuario}", ex);
+            }
         }
     }
 }
