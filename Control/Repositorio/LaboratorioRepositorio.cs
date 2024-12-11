@@ -8,26 +8,27 @@ namespace Control.Repositorio
 {
     public class LaboratorioRepositorio : ILaboratoriosRepositorio
     {
-        private readonly ApplicationDbContext _contextoDb;
-        private Laboratorios laboratorio;
+        private readonly ApplicationDbContext contextoDb;
+        
 
         public LaboratorioRepositorio(ApplicationDbContext dbContext)
         {
-            _contextoDb = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            contextoDb = dbContext;
+                
         }
 
-        async Task<Laboratorios> ILaboratoriosRepositorio.Agregar(Laboratorios laboratorios)
+        public async Task<Data.Entidades.Laboratorios> Agregar(Data.Entidades.Laboratorios laboratorios)
         {
-            if (laboratorio == null)
+            if (laboratorios == null)
             {
-                throw new ArgumentNullException(nameof(laboratorio));
+                throw new ArgumentNullException(nameof(laboratorios));
             }
 
             try
             {
-                await _contextoDb.laboratorios.AddAsync(laboratorio);
-                await _contextoDb.SaveChangesAsync();
-                return laboratorio;
+                await contextoDb.laboratorios.AddAsync(laboratorios);
+                await contextoDb.SaveChangesAsync();
+                return laboratorios;
             }
             catch (Exception ex)
             {
@@ -35,31 +36,31 @@ namespace Control.Repositorio
             }
         }
 
-        async Task<Laboratorios> ILaboratoriosRepositorio.Eliminar(Laboratorios laboratorios)
+        public async Task<Data.Entidades.Laboratorios> Eliminar(Data.Entidades.Laboratorios laboratorios)
         {
-            if (laboratorio == null)
+            if (laboratorios == null)
             {
-                throw new ArgumentNullException(nameof(laboratorio), "El laboratorio no debe ser nulo");
+                throw new ArgumentNullException(nameof(laboratorios), "El laboratorio no debe ser nulo");
             }
 
             try
             {
-                _contextoDb.laboratorios.Remove(laboratorio);
-                await _contextoDb.SaveChangesAsync();
-                return laboratorio;
+                contextoDb.laboratorios.Remove(laboratorios);
+                await contextoDb.SaveChangesAsync();
+                return laboratorios;
             }
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"Error al eliminar el laboratorio con ID {laboratorio.IdLaboratorio}", ex);
+                    $"Error al eliminar el laboratorio con ID {laboratorios.IdLaboratorio}", ex);
             }
         }
 
-        async Task<IEnumerable<Laboratorios>> ILaboratoriosRepositorio.GetAll()
+        public async Task<IEnumerable<Data.Entidades.Laboratorios>> GetAll()
         {
             try
             {
-                return await _contextoDb.laboratorios.ToListAsync();
+                return await contextoDb.laboratorios.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -67,56 +68,54 @@ namespace Control.Repositorio
             }
         }
 
-        async Task<IEnumerable<Laboratorios>> ILaboratoriosRepositorio.GetOne(int id)
+        public async Task<IEnumerable<Data.Entidades.Laboratorios>> GetOne(int id)
         {
             try
             {
-                var resultado = await _contextoDb.laboratorios
-                    .FirstOrDefaultAsync(l => l.IdLaboratorio == id);
+                var resultado = await contextoDb.laboratorios.FirstOrDefaultAsync(l => l.IdLaboratorio == id);
 
                 if (resultado == null)
                 {
                     throw new Exception($"No se encontró el laboratorio con ID {id}");
                 }
 
-                return (IEnumerable<Laboratorios>)resultado;
+                return (IEnumerable<Data.Entidades.Laboratorios>)resultado;
             }
-            
+
             catch (Exception ex)
             {
                 throw new Exception($"Error al buscar el laboratorio con ID {id}", ex);
             }
         }
 
-        async Task<Laboratorios> ILaboratoriosRepositorio.Modificar(Laboratorios laboratorios)
+        public async Task<Data.Entidades.Laboratorios> Modificar(Data.Entidades.Laboratorios laboratorios)
         {
-            if (laboratorio == null)
+            if (laboratorios == null)
             {
-                throw new ArgumentNullException(nameof(laboratorio));
+                throw new ArgumentNullException(nameof(laboratorios));
             }
 
             try
             {
-                var labExistente = await _contextoDb.laboratorios
-                    .FirstOrDefaultAsync(l => l.IdLaboratorio == laboratorio.IdLaboratorio);
+                var labExistente = await contextoDb.laboratorios.FirstOrDefaultAsync(l => l.IdLaboratorio == laboratorios.IdLaboratorio);
 
                 if (labExistente == null)
                 {
-                    throw new Exception($"No se encontró el laboratorio con ID {laboratorio.IdLaboratorio}");
+                    throw new Exception($"No se encontró el laboratorio con ID {laboratorios.IdLaboratorio}");
                 }
 
-                _contextoDb.Entry(labExistente).CurrentValues.SetValues(laboratorio);
-                await _contextoDb.SaveChangesAsync();
+                contextoDb.Entry(labExistente).CurrentValues.SetValues(laboratorios);
+                await contextoDb.SaveChangesAsync();
 
                 return labExistente;
             }
-            
+
             catch (Exception ex)
             {
                 throw new Exception(
-                    $"Error al modificar el laboratorio con ID {laboratorio.IdLaboratorio}", ex);
+                    $"Error al modificar el laboratorio con ID {laboratorios.IdLaboratorio}", ex);
             }
         }
     }
-    }
+    
 }

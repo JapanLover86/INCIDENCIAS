@@ -6,24 +6,19 @@ namespace Control.Data.Entidades
     {
 
         [Key]
-        [Required(ErrorMessage = "El id es necesario")]
-        [Range(0, 99999, ErrorMessage = "El rango debe de ser de cinco dígitos")]
-        public int IdLaboratorio {  get; set; }
+        public int IdLaboratorio { get; set; }
 
-        [Required(ErrorMessage = "El nombre es necesario")]
-        public  string? nombreLab {  get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string NombreLab { get; set; }
 
-        public string? ubicacion { get; set; }
+        [MaxLength(200)]
+        public string Ubicacion { get; set; }
 
-        [Required(ErrorMessage = "La capacidad es necesaria")]
-        public int capacidad { get; set; }
+        [Required]
+        public int Capacidad { get; set; }
 
-        public TimeOnly horario { get; set; }
-
-        // relacion con las tablas 
-
-        public IEnumerable<Incidencias> Incidencias { get; set; }
-
-        public IEnumerable<Equipos> Equipos { get; set; }
+        public ICollection<Incidencias> Incidencias { get; set; }
+        public ICollection<Equipos> Equipos { get; set; }
     }
 }

@@ -52,9 +52,6 @@ namespace Control.Repositorio
             return await contextodb.historialIncidencias.FirstOrDefaultAsync(h => h.IdHistorial == id);
         }
 
-        Task<IEnumerable<HistorialIncidencias>> IHistorialRepositorio.GetOne(int id)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

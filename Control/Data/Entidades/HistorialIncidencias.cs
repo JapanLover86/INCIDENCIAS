@@ -7,18 +7,19 @@ namespace Control.Data.Entidades
         [Key]
         public int IdHistorial { get; set; }
 
-        public DateOnly FechaHistorial { get; set; }
+        [Required]
+        public int IdIncidencias { get; set; }
+        public Incidencias Incidencias { get; set; }
 
+        [Required]
+        [MaxLength(200)]
         public string Accion { get; set; }
 
+        [MaxLength(500)]
         public string Comentarios { get; set; }
 
+        [Required]
+        [MaxLength(100)]
         public string UsuarioResponsable { get; set; }
-
-        // Foreign keys
-        public int IdIncidencias { get; set; }
-
-        // Relación con Incidencias
-        public Incidencias Incidencias { get; set; }
     }
 }

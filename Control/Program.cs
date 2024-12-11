@@ -1,6 +1,7 @@
 using Control.Components;
 using Control.Components.Account;
 using Control.Data;
+using Control.Repositorio;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+builder.Services.AddScoped<IIncidenciasRepositorio, IncidenciasRepositorio>();
 
 builder.Services.AddAuthentication(options =>
     {

@@ -6,18 +6,16 @@ namespace Control.Data.Entidades
     {
 
         [Key]
-        [Required(ErrorMessage = "El id es necesario")]
-        [Range(0, 99999, ErrorMessage = "El rango debe de ser de cinco dígitos")]
         public int IdRecursos { get; set; }
 
-        [Required(ErrorMessage = "El nombre debe de ser necesario")]
-        public string nombreRec {  get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string NombreRec { get; set; }
 
-        public double cantidad { get; set; }
+        [MaxLength(500)]
+        public string DesRec { get; set; }
 
-        public string desRec { get; set; }
-
-        public IEnumerable<AsignacionRecursos> AsignacionRecursos { get; set; }
+        public ICollection<AsignacionRecursos> AsignacionRecursos { get; set; }
 
     }
 }
