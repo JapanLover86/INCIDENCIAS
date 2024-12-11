@@ -17,23 +17,18 @@ namespace Control.Repositorio
 
         public async Task<HistorialIncidencias> Agregar(HistorialIncidencias historialIncidencias)
         {
-            await _context.HistorialIncidencias.AddAsync(historialIncidencias);
+            await _context.historialIncidencias.AddAsync(historialIncidencias);
             await _context.SaveChangesAsync();
             return historialIncidencias;
         }
 
         public async Task<HistorialIncidencias> Modificar(HistorialIncidencias historialIncidencias)
         {
-            var historialExistente = await _context.HistorialIncidencias.FirstOrDefaultAsync(h => h.IdHistorial == historialIncidencias.IdHistorial);
-            if (historialExistente != null)
+            var historialExistente = await _context.historialIncidencias.FirstOrDefaultAsync(h => h.IdHistorial == historialIncidencias.IdHistorial);
+            if (historialExistente is not null)
             {
-                historialExistente.FechaHistorial = historialIncidencias.FechaHistorial;
-                historialExistente.Accion = historialIncidencias.Accion;
-                historialExistente.Comentarios = historialIncidencias.Comentarios;
-                historialExistente.UsuarioResponsable = historialIncidencias.UsuarioResponsable;
-                historialExistente.IdIncidencias = historialIncidencias.IdIncidencias;
-
-                _context.HistorialIncidencias.Update(historialExistente);
+              
+                _context.historialIncidencias.Update(historialExistente);
                 await _context.SaveChangesAsync();
                 return historialExistente;
             }
@@ -42,20 +37,24 @@ namespace Control.Repositorio
 
         public async Task<HistorialIncidencias> Eliminar(HistorialIncidencias historialIncidencias)
         {
-            _context.HistorialIncidencias.Remove(historialIncidencias);
+            _context.historialIncidencias.Remove(historialIncidencias);
             await _context.SaveChangesAsync();
             return historialIncidencias;
         }
 
         public async Task<IEnumerable<HistorialIncidencias>> GetAll()
         {
-            return await _context.HistorialIncidencias.ToListAsync();
+            return await _context.historialIncidencias.ToListAsync();
         }
 
         public async Task<HistorialIncidencias> GetOne(int id)
         {
-            return await _context.HistorialIncidencias
-                .FirstOrDefaultAsync(h => h.IdHistorial == id);
+            return await _context.historialIncidencias.FirstOrDefaultAsync(h => h.IdHistorial == id);
+        }
+
+        Task<IEnumerable<HistorialIncidencias>> IHistorialRepositorio.GetOne(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
