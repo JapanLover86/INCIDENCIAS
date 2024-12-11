@@ -9,7 +9,7 @@ namespace Control.Data.Entidades
 
         [Required]
         public int? IdIncidencias { get; set; }
-        public Incidencias Incidencias { get; set; }
+        public Incidencias? Incidencias { get; set; }
 
         [Required]
         public int? IdRecursos { get; set; }
