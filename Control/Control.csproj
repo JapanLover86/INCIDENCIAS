@@ -9,12 +9,16 @@
 
   <ItemGroup>
     <Compile Remove="Components\Pages\PagesAsignacion\**" />
+    <Compile Remove="Components\Pages\PagesEquipos\**" />
     <Compile Remove="Components\Pages\PagesHistorial\**" />
     <Content Remove="Components\Pages\PagesAsignacion\**" />
+    <Content Remove="Components\Pages\PagesEquipos\**" />
     <Content Remove="Components\Pages\PagesHistorial\**" />
     <EmbeddedResource Remove="Components\Pages\PagesAsignacion\**" />
+    <EmbeddedResource Remove="Components\Pages\PagesEquipos\**" />
     <EmbeddedResource Remove="Components\Pages\PagesHistorial\**" />
     <None Remove="Components\Pages\PagesAsignacion\**" />
+    <None Remove="Components\Pages\PagesEquipos\**" />
     <None Remove="Components\Pages\PagesHistorial\**" />
   </ItemGroup>
 
@@ -26,10 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Pages\PagesUsuario\" />
-    <Folder Include="Components\Pages\PagesRecursos\" />
-    <Folder Include="Components\Pages\PagesLaboratorio\" />
-    <Folder Include="Components\Pages\PagesEquipos\" />
     <Folder Include="Extensiones\" />
     <Folder Include="Servicios\Notificaciones\" />
     <Folder Include="VistaModelo\" />
