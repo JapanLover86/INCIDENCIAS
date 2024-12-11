@@ -2,9 +2,11 @@
 using Control.Data;
 using Control.Data.Entidades;
 using Control.Migrations;
+using Microsoft.EntityFrameworkCore;
 
-namespace Control.Repositorio
+namespace Control.Repositorio 
 {
+
     public class RecursosRepositorio : IRecursosRepositorio
     {
         public readonly ApplicationDbContext contextodb;
@@ -16,29 +18,63 @@ namespace Control.Repositorio
         public async Task<Data.Entidades.Recursos> Agregar(Data.Entidades.Recursos recursos)
         {
             // Agregar el recurso a la base de datos
-            object values = await contextodb.Recursos.AddAsync(recursos);
+            await contextodb.recursos.AddAsync(recursos);
             await contextodb.SaveChangesAsync();
             return recursos;
         }
 
-        public Task<Data.Entidades.Recursos> Eliminar(Data.Entidades.Recursos recursos)
+        public async Task<Data.Entidades.Recursos> Eliminar(Data.Entidades.Recursos recursos)
         {
-            throw new NotImplementedException();
+            if (recursos == null)
+            {
+                throw new ArgumentNullException(nameof(recursos), "El recurso no debe ser nulo");
+            }
+
+            try
+            {
+                contextodb.recursos.Remove(recursos);
+                await contextodb.SaveChangesAsync();
+                return recursos;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al eliminar el recurso con ID {recursos.IdRecursos}", ex);
+            }
         }
 
-        public Task<IEnumerable<Data.Entidades.Recursos>> GetAll()
+        public async Task<IEnumerable<Data.Entidades.Recursos>> GetAll()
         {
-            throw new NotImplementedException();
+            return await contextodb.recursos.ToListAsync();
         }
 
-        public Task<IEnumerable<Data.Entidades.Recursos>> GetOne(int id)
+        public async Task<IEnumerable<Data.Entidades.Recursos>> GetOne(int id)
         {
-            throw new NotImplementedException();
+            var recurso = await contextodb.recursos.FirstOrDefaultAsync(r => r.IdRecursos == id);
+            if (recurso == null)
+            {
+                throw new KeyNotFoundException($"No se encontró un recurso con el ID {id}");
+            }
+            return (IEnumerable<Data.Entidades.Recursos>)recurso;  // Se devuelve un único recurso;
         }
 
-        public Task<Data.Entidades.Recursos> Modificar(Data.Entidades.Recursos recursos)
+        public async Task<Data.Entidades.Recursos> Modificar(Data.Entidades.Recursos recursos)
         {
-            throw new NotImplementedException();
+            var modificarRecurso = await contextodb.recursos.FirstOrDefaultAsync(r => r.IdRecursos == recursos.IdRecursos);
+
+            // Si el recurso existe, se actualiza
+            if (modificarRecurso != null)
+            {
+                modificarRecurso.Nombre = recursos.Nombre;
+                modificarRecurso.Descripcion = recursos.Descripcion;
+                modificarRecurso.CantidadDisponible = recursos.CantidadDisponible;
+
+                // Se actualiza el recurso en la base de datos
+                contextodb.recursos.Update(modificarRecurso);
+                await contextodb.SaveChangesAsync();
+
+                return modificarRecurso;
+            }
+            throw new KeyNotFoundException($"No se encontró un recurso con ID {recursos.IdRecursos}");
         }
     }
 }
