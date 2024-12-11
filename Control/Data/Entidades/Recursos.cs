@@ -7,7 +7,7 @@ namespace Control.Data.Entidades
 
         [Key]
         [Required(ErrorMessage = "El id es necesario")]
-        [Range(0, 999999, ErrorMessage = "El rango debe de ser de cinco dígitos")]
+        [Range(0, 99999, ErrorMessage = "El rango debe de ser de cinco dígitos")]
         public int IdRecursos { get; set; }
 
         [Required(ErrorMessage = "El nombre debe de ser necesario")]

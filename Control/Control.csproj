@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Extensiones\" />
-    <Folder Include="Repositorio\" />
     <Folder Include="VistaModelo\" />
     <Folder Include="wwwroot\Js\" />
     <Folder Include="wwwroot\Images\" />

@@ -1,8 +1,10 @@
-﻿namespace Control.Data.Entidades
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Control.Data.Entidades
 {
     public class HistorialIncidencias
     {
-
+        [Key]
         public int IdHistorial {  get; set; }
 
         public DateOnly fechaHistorial { get; set; }
@@ -13,11 +15,13 @@
 
         public string usuarioResponsable { get; set; }
 
+
+
         //foreign keys 
         public int IdIncidencias { get; set; }
 
-        //relacion con Incidencias
 
+        //relacion con Incidencias
         public Incidencias Incidencias { get; set; }
 
 

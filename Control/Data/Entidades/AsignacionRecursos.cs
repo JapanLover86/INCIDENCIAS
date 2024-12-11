@@ -6,7 +6,7 @@ namespace Control.Data.Entidades
     {
         [Key]
         [Required(ErrorMessage = "El id es necesario")]
-        [Range(0, 999999, ErrorMessage = "El rango debe de ser de cinco dígitos")]
+        [Range(0, 99999, ErrorMessage = "El rango debe de ser de cinco dígitos")]
         public int IdAsignacion {  get; set; }  
 
         public double cantidadUtilizada { get; set; }
@@ -25,11 +25,7 @@ namespace Control.Data.Entidades
 
         //
 
-        
-
-
+       
     }
-
-
     
 }

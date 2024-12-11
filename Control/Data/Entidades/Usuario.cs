@@ -4,6 +4,7 @@ namespace Control.Data.Entidades
 {
     public class Usuario
     {
+        [Key]
         [Required(ErrorMessage = "El id es necesario")]
         [Range(0, 99999, ErrorMessage = "El rango debe de ser de cinco dígitos")]
         public int IdUsuario { get; set; }
