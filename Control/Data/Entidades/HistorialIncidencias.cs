@@ -5,32 +5,20 @@ namespace Control.Data.Entidades
     public class HistorialIncidencias
     {
         [Key]
-        public int IdHistorial {  get; set; }
+        public int IdHistorial { get; set; }
 
-        public DateOnly fechaHistorial { get; set; }
+        public DateOnly FechaHistorial { get; set; }
 
-        public string accion { get; set; }
+        public string Accion { get; set; }
 
-        public string comentarios { get; set; }
+        public string Comentarios { get; set; }
 
-        public string usuarioResponsable { get; set; }
+        public string UsuarioResponsable { get; set; }
 
-
-
-        //foreign keys 
+        // Foreign keys
         public int IdIncidencias { get; set; }
 
-
-        //relacion con Incidencias
+        // Relación con Incidencias
         public Incidencias Incidencias { get; set; }
-
-
-
-
-        //relacion con las tablas 
-
-        
-
-
     }
 }

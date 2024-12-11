@@ -11,6 +11,7 @@ namespace Control.Data
         public DbSet<AsignacionRecursos> asignacionRecursos { get; set; }
         public DbSet<Equipos> Equipos { get; set; }
         public DbSet<HistorialIncidencias> historialIncidencias { get; set; }
+        public object HistorialIncidencias { get; internal set; }
         public DbSet<Incidencias> incidencias { get; set; }
         public DbSet<Laboratorios> laboratorios { get; set; }
         public DbSet<Recursos> recursos { get; set; }
@@ -46,6 +47,11 @@ namespace Control.Data
                 .WithMany(u => u.Incidencias)
                 .HasForeignKey(i => i.IdUsuario);
 
+            builder.Entity<HistorialIncidencias>()
+                .HasOne(h => h.Incidencias)
+                .WithMany(i => i.HistorialIncidencias)
+                .HasForeignKey(h => h.IdIncidencias);
+
             // Llamar a SeedData para inicializar los datos
             SeedData(builder);
         }
@@ -72,8 +78,8 @@ namespace Control.Data
 
             // Datos iniciales para la tabla HistorialIncidencias
             builder.Entity<HistorialIncidencias>().HasData(
-                new HistorialIncidencias { IdHistorial = 1, fechaHistorial = new DateOnly(2024, 12, 3), accion = "Reparación iniciada", comentarios = "PC abierta para diagnóstico", usuarioResponsable = "Juan Perez", IdIncidencias = 1 },
-                new HistorialIncidencias { IdHistorial = 2, fechaHistorial = new DateOnly(2024, 12, 4), accion = "Reparación completada", comentarios = "Proyector reparado", usuarioResponsable = "Maria Lopez", IdIncidencias = 2 }
+                new HistorialIncidencias { IdHistorial = 1, FechaHistorial = new DateOnly(2024, 12, 3), Accion = "Reparación iniciada", Comentarios = "PC abierta para diagnóstico", UsuarioResponsable = "Juan Perez", IdIncidencias = 1 },
+                new HistorialIncidencias { IdHistorial = 2, FechaHistorial = new DateOnly(2024, 12, 4), Accion = "Reparación completada", Comentarios = "Proyector reparado", UsuarioResponsable = "Maria Lopez", IdIncidencias = 2 }
             );
 
             // Datos iniciales para la tabla Incidencias
