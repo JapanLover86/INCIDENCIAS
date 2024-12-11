@@ -1,5 +1,6 @@
 ﻿using Control.Data;
 using Control.Data.Entidades;
+using Microsoft.EntityFrameworkCore;
 
 namespace Control.Repositorio
 {
@@ -16,16 +17,32 @@ namespace Control.Repositorio
         public async Task<AsignacionRecursos> Agregar (AsignacionRecursos asignacionRecursos)
         {
             await contextodb.asignacionRecursos.AddAsync(asignacionRecursos);
+            await contextodb.SaveChangesAsync();
+            return asignacionRecursos;
         }
 
-        public Task<AsignacionRecursos> Eliminar(AsignacionRecursos asignacionRecursos)
+        public async Task<AsignacionRecursos> Eliminar(AsignacionRecursos asignacionRecursos)
         {
-            throw new NotImplementedException();
+            if(asignacionRecursos == null)
+            {
+                throw  new ArgumentNullException((nameof(asignacionRecursos)),"La  asignación no debe de ser nula");
+            }
+            try
+            {
+                contextodb.asignacionRecursos.Remove(asignacionRecursos);
+                await contextodb.SaveChangesAsync();
+                return asignacionRecursos;
+            }
+            catch (Exception ex) 
+            {
+                    //Relanzar la excepcion para que el llamador pueda manejarla 
+                    throw new Exception($"Error al eliminar la asignación de recursos con ID  {asignacionRecursos.IdRecursos}", ex);
+            }
         }
 
-        public Task<IEnumerable<AsignacionRecursos>> GetAll()
+        public async Task<IEnumerable<AsignacionRecursos>> GetAll()
         {
-            throw new NotImplementedException();
+            return await contextodb.asignacionRecursos.ToListAsync();
         }
 
         public Task<IEnumerable<AsignacionRecursos>> GetOne(int id)
