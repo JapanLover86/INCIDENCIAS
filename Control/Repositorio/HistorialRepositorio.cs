@@ -8,28 +8,28 @@ namespace Control.Repositorio
 {
     public class HistorialRepositorio : IHistorialRepositorio
     {
-        private readonly ApplicationDbContext _context;
+        public readonly ApplicationDbContext contextodb;
 
-        public HistorialRepositorio(ApplicationDbContext context)
+        public HistorialRepositorio(ApplicationDbContext dbContext)
         {
-            _context = context;
+            contextodb = dbContext;
         }
 
         public async Task<HistorialIncidencias> Agregar(HistorialIncidencias historialIncidencias)
         {
-            await _context.historialIncidencias.AddAsync(historialIncidencias);
-            await _context.SaveChangesAsync();
+            await contextodb.historialIncidencias.AddAsync(historialIncidencias);
+            await contextodb.SaveChangesAsync();
             return historialIncidencias;
         }
 
         public async Task<HistorialIncidencias> Modificar(HistorialIncidencias historialIncidencias)
         {
-            var historialExistente = await _context.historialIncidencias.FirstOrDefaultAsync(h => h.IdHistorial == historialIncidencias.IdHistorial);
+            var historialExistente = await contextodb.historialIncidencias.FirstOrDefaultAsync(h => h.IdHistorial == historialIncidencias.IdHistorial);
             if (historialExistente is not null)
             {
               
-                _context.historialIncidencias.Update(historialExistente);
-                await _context.SaveChangesAsync();
+                contextodb.historialIncidencias.Update(historialExistente);
+                await contextodb.SaveChangesAsync();
                 return historialExistente;
             }
             return null;
@@ -37,19 +37,19 @@ namespace Control.Repositorio
 
         public async Task<HistorialIncidencias> Eliminar(HistorialIncidencias historialIncidencias)
         {
-            _context.historialIncidencias.Remove(historialIncidencias);
-            await _context.SaveChangesAsync();
+            contextodb.historialIncidencias.Remove(historialIncidencias);
+            await contextodb.SaveChangesAsync();
             return historialIncidencias;
         }
 
         public async Task<IEnumerable<HistorialIncidencias>> GetAll()
         {
-            return await _context.historialIncidencias.ToListAsync();
+            return await contextodb.historialIncidencias.ToListAsync();
         }
 
         public async Task<HistorialIncidencias> GetOne(int id)
         {
-            return await _context.historialIncidencias.FirstOrDefaultAsync(h => h.IdHistorial == id);
+            return await contextodb.historialIncidencias.FirstOrDefaultAsync(h => h.IdHistorial == id);
         }
 
         Task<IEnumerable<HistorialIncidencias>> IHistorialRepositorio.GetOne(int id)
