@@ -44,16 +44,16 @@ else
                     </thead>
 
                     <tbody>
-                        @foreach (var item in incidencias)
+                        @foreach (var item in equipos)
                         {
                             <tr>
-                                <td>@item.IdIncidencias</td>
+                                <td>@item.</td>
                                 <td>
-                                    <a href="@($"producto/modificar/{item.IdIncidencias}")" class="btn btn-primary">
+                                    <a href="@($"producto/modificar/{item.IdEquipos}")" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modificar
                                     </a>
 
-                                    <a href="@($"producto/eliminar/{item.IdIncidencias}")" class="btn btn-danger">
+                                    <a href="@($"producto/eliminar/{item.IdEquipos}")" class="btn btn-danger">
                                         <i class="bi bi-trash"></i> Eliminar
                                     </a>
                                 </td>
@@ -61,7 +61,7 @@ else
                                 <td>@item.</td>
                                 <td>@item.</td>
                                 <td>@item.</td>
-                                <td>@item.DescInc</td>
+                                <td>@item.</td>
                             </tr>
                         }
                     </tbody>
@@ -80,7 +80,7 @@ else
 
     private bool Cargando { get; set; } = false;
 
-    private IEnumerable<Incidencias> incidencias { get; set; } = new List<Incidencias>();
+    private IEnumerable<Equipos> equipos { get; set; } = new List<Equipos>();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -95,6 +95,6 @@ else
 
     public async Task CargandoIncidencias()
     {
-        incidencias = await _incidenciasRepositorio.GetAll();
+        equipos = await _equiposRepositorio.GetAll();
     }
 }
