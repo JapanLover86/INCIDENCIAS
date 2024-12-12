@@ -14,7 +14,7 @@ namespace Control.Repositorio
 
         public async Task<Incidencias> Agregar(Incidencias incidencias)
         {
-            await contextodb.Incidencias.AddAsync(incidencias);
+            await contextodb.incidencias.AddAsync(incidencias);
             await contextodb.SaveChangesAsync();
             return incidencias;
         }
@@ -28,7 +28,7 @@ namespace Control.Repositorio
             }
             try
             {
-                contextodb.Incidencias.Remove(incidencias);
+                contextodb.incidencias.Remove(incidencias);
                 await contextodb.SaveChangesAsync();
                 return incidencias;
             }
