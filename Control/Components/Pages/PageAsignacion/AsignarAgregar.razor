@@ -2,4 +2,73 @@
 @inject IAsignacionrecursosRepositorio _asignacionRepositorio
 @inject NavigationManager NavigationManager
 
+<h3>Asignar Producto a Almacén</h3>
 
+<EditForm Model="@asignacion" OnValidSubmit="@AsignarProducto">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="producto" class="form-label">Producto</label>
+        <InputSelect id="producto" class="form-control" @bind-Value="@asignacion.ProductoId">
+            <option value="">Seleccione un Producto</option>
+            @foreach (var producto in productos)
+            {
+                <option value="@producto.Id">@producto.nom_producto</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="mb-3">
+        <label for="almacen" class="form-label">Almacén</label>
+        <InputSelect id="almacen" class="form-control" @bind-Value="@asignacion.AlmacenId">
+            <option value="">Seleccione un Almacén</option>
+            @foreach (var almacen in almacenes)
+            {
+                <option value="@almacen.Id">@almacen.Nombre</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="mb-3">
+        <label for="cantidad" class="form-label">Cantidad</label>
+        <InputNumber id="cantidad" class="form-control" @bind-Value="@asignacion.Cantidad" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Asignar</button>
+</EditForm>
+
+@code {
+    private AsignacionProducto asignacion = new AsignacionProducto();
+    private List<Producto> productos = new List<Producto>();
+    private List<Almacen> almacenes = new List<Almacen>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Cargar productos y almacenes disponibles
+        try
+        {
+            productos = await productoRepositorio.ObtenerTodos();
+            almacenes = await almacenRepositorio.ObtenerTodos();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar productos o almacenes: {ex.Message}");
+            // Manejar el error, posiblemente mostrando un mensaje al usuario
+        }
+    }
+
+    private async Task AsignarProducto()
+    {
+        try
+        {
+            await productoRepositorio.AsignarAAlmacen(asignacion);
+            NavigationManager.NavigateTo("/producto/lista");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al asignar el producto: {ex.Message}");
+            // Aquí podrías mostrar un mensaje de error más descriptivo
+        }
+    }
+}
