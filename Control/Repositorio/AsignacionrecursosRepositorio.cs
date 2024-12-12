@@ -36,7 +36,7 @@ namespace Control.Repositorio
             catch (Exception ex) 
             {
                     //Relanzar la excepcion para que el llamador pueda manejarla 
-                    throw new Exception($"Error al eliminar la asignación de recursos con ID  {asignacionRecursos.IdRecursos}", ex);
+                    throw new Exception($"Error al eliminar la asignación de recursos con ID  {asignacionRecursos.IdAsignacion}", ex);
             }
         }
 
@@ -59,7 +59,7 @@ namespace Control.Repositorio
 
         public async Task<AsignacionRecursos> Modificar(AsignacionRecursos asignacionRecursos)
         {
-            var modificarRecurso = await contextodb.asignacionRecursos.FirstOrDefaultAsync(c => c.IdRecursos == asignacionRecursos.IdRecursos);
+            var modificarRecurso = await contextodb.asignacionRecursos.FirstOrDefaultAsync(c => c.IdAsignacion == asignacionRecursos.IdAsignacion);
             if(modificarRecurso is not null)
             {
                 asignacionRecursos.CantidadUtilizada = modificarRecurso.CantidadUtilizada;

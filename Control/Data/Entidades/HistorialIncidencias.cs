@@ -8,10 +8,6 @@ namespace Control.Data.Entidades
         public int IdHistorial { get; set; }
 
         [Required]
-        public int? IdIncidencias { get; set; }
-        public Incidencias Incidencias { get; set; }
-
-        [Required]
         [MaxLength(200)]
         public string Accion { get; set; }
 
@@ -20,6 +16,6 @@ namespace Control.Data.Entidades
 
         [Required]
         [MaxLength(100)]
-        public string UsuarioResponsable { get; set; }
+        public string UsuarioRes { get; set; }
     }
 }

@@ -1,10 +1,6 @@
-﻿
-using Control.Data;
-using Control.Data.Entidades;
-using Control.Migrations;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace Control.Repositorio 
+namespace Control.Repositorio
 {
 
     public class RecursosRepositorio : IRecursosRepositorio
@@ -66,7 +62,7 @@ namespace Control.Repositorio
             {
                 modificarRecurso.NombreRec = recursos.NombreRec;
                 modificarRecurso.DesRec = recursos.DesRec;
-                modificarRecurso.AsignacionRecursos = recursos.AsignacionRecursos;
+                
 
                 // Se actualiza el recurso en la base de datos
                 contextodb.recursos.Update(modificarRecurso);

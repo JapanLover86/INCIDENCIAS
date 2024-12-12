@@ -15,7 +15,7 @@ namespace Control.Data.Entidades
         [MaxLength(500)]
         public string DesRec { get; set; }
 
-        public ICollection<AsignacionRecursos> AsignacionRecursos { get; set; }
+        
 
     }
 }

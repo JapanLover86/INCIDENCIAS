@@ -41,11 +41,9 @@ namespace Control.Repositorio
 
         public async Task<IEnumerable<Incidencias>> GetAll()
         {
-            return await contextodb.incidencias
-            .Include(i => i.Equipos)
-            .Include(i => i.Usuario)
-            .Include(i => i.Laboratorio)
-            .ToListAsync();
+            return await contextodb.incidencias.ToListAsync();
+
+            
         }
 
         public async Task<IEnumerable<Incidencias>> GetOne(int id)

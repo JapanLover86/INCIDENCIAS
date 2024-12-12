@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Control.Migrations
 {
     [DbContext(typeof(AplicacionDbContext))]
-    [Migration("20241211230557_Laboratorio")]
-    partial class Laboratorio
+    [Migration("20241212005251_Usuario")]
+    partial class Usuario
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,43 +35,28 @@ namespace Control.Migrations
                     b.Property<int>("CantidadUtilizada")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdIncidencias")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdRecursos")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IncidenciasIdIncidencias")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RecursosIdRecursos")
-                        .HasColumnType("int");
-
                     b.HasKey("IdAsignacion");
 
-                    b.HasIndex("IncidenciasIdIncidencias");
-
-                    b.HasIndex("RecursosIdRecursos");
-
                     b.ToTable("asignacionRecursos");
+
+                    b.HasData(
+                        new
+                        {
+                            IdAsignacion = 123512,
+                            CantidadUtilizada = 34522
+                        });
                 });
 
             modelBuilder.Entity("Control.Data.Entidades.Equipos", b =>
                 {
-                    b.Property<int?>("IdEquipos")
+                    b.Property<int>("IdEquipos")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("IdEquipos"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEquipos"));
 
                     b.Property<DateTime>("FechaInst")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("IdLaboratorio")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LaboratorioIdLaboratorio")
-                        .HasColumnType("int");
 
                     b.Property<string>("Modelo")
                         .IsRequired()
@@ -85,9 +70,16 @@ namespace Control.Migrations
 
                     b.HasKey("IdEquipos");
 
-                    b.HasIndex("LaboratorioIdLaboratorio");
-
                     b.ToTable("equipos");
+
+                    b.HasData(
+                        new
+                        {
+                            IdEquipos = 34112,
+                            FechaInst = new DateTime(2024, 12, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Modelo = "Lenovo",
+                            NombreEquipos = "LAB-01"
+                        });
                 });
 
             modelBuilder.Entity("Control.Data.Entidades.HistorialIncidencias", b =>
@@ -108,22 +100,23 @@ namespace Control.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("IdIncidencias")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IncidenciasIdIncidencias")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsuarioResponsable")
+                    b.Property<string>("UsuarioRes")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("IdHistorial");
 
-                    b.HasIndex("IncidenciasIdIncidencias");
-
                     b.ToTable("historialIncidencias");
+
+                    b.HasData(
+                        new
+                        {
+                            IdHistorial = 123553,
+                            Accion = "Reparada",
+                            Comentarios = "Esta computadora fue raparada",
+                            UsuarioRes = "Jorgito"
+                        });
                 });
 
             modelBuilder.Entity("Control.Data.Entidades.Incidencias", b =>
@@ -139,48 +132,33 @@ namespace Control.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int>("EquiposIdEquipos")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("FechaReporte")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaSolucion")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdEquipos")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdLaboratorio")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LaboratorioIdLaboratorio")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioIdUsuario")
-                        .HasColumnType("int");
-
                     b.HasKey("IdIncidencias");
 
-                    b.HasIndex("EquiposIdEquipos");
-
-                    b.HasIndex("LaboratorioIdLaboratorio");
-
-                    b.HasIndex("UsuarioIdUsuario");
-
                     b.ToTable("incidencias");
+
+                    b.HasData(
+                        new
+                        {
+                            IdIncidencias = 1251222,
+                            DescInc = "Sucedio mientras alguien movia..",
+                            FechaReporte = new DateTime(2024, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaSolucion = new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Control.Data.Entidades.Laboratorios", b =>
                 {
-                    b.Property<int?>("IdLaboratorio")
+                    b.Property<int>("IdLaboratorio")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("IdLaboratorio"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdLaboratorio"));
 
                     b.Property<int>("Capacidad")
                         .HasColumnType("int");
@@ -202,8 +180,8 @@ namespace Control.Migrations
                     b.HasData(
                         new
                         {
-                            IdLaboratorio = 23532,
-                            Capacidad = 34,
+                            IdLaboratorio = 34123,
+                            Capacidad = 25,
                             NombreLab = "LAB-01",
                             Ubicacion = "Upla-Huancayo"
                         });
@@ -211,11 +189,11 @@ namespace Control.Migrations
 
             modelBuilder.Entity("Control.Data.Entidades.Recursos", b =>
                 {
-                    b.Property<int>("IdRecursos")
+                    b.Property<int?>("IdRecursos")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRecursos"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("IdRecursos"));
 
                     b.Property<string>("DesRec")
                         .IsRequired()
@@ -230,6 +208,14 @@ namespace Control.Migrations
                     b.HasKey("IdRecursos");
 
                     b.ToTable("recursos");
+
+                    b.HasData(
+                        new
+                        {
+                            IdRecursos = 235121,
+                            DesRec = "Se necesito el recurso",
+                            NombreRec = "Recurso compartido"
+                        });
                 });
 
             modelBuilder.Entity("Control.Data.Entidades.Usuario", b =>
@@ -263,103 +249,16 @@ namespace Control.Migrations
                     b.HasKey("IdUsuario");
 
                     b.ToTable("usuarios");
-                });
 
-            modelBuilder.Entity("Control.Data.Entidades.AsignacionRecursos", b =>
-                {
-                    b.HasOne("Control.Data.Entidades.Incidencias", "Incidencias")
-                        .WithMany("AsignacionRecursos")
-                        .HasForeignKey("IncidenciasIdIncidencias")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Control.Data.Entidades.Recursos", "Recursos")
-                        .WithMany("AsignacionRecursos")
-                        .HasForeignKey("RecursosIdRecursos")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Incidencias");
-
-                    b.Navigation("Recursos");
-                });
-
-            modelBuilder.Entity("Control.Data.Entidades.Equipos", b =>
-                {
-                    b.HasOne("Control.Data.Entidades.Laboratorios", "Laboratorio")
-                        .WithMany("Equipos")
-                        .HasForeignKey("LaboratorioIdLaboratorio")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Laboratorio");
-                });
-
-            modelBuilder.Entity("Control.Data.Entidades.HistorialIncidencias", b =>
-                {
-                    b.HasOne("Control.Data.Entidades.Incidencias", "Incidencias")
-                        .WithMany("HistorialIncidencias")
-                        .HasForeignKey("IncidenciasIdIncidencias")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Incidencias");
-                });
-
-            modelBuilder.Entity("Control.Data.Entidades.Incidencias", b =>
-                {
-                    b.HasOne("Control.Data.Entidades.Equipos", "Equipos")
-                        .WithMany("Incidencias")
-                        .HasForeignKey("EquiposIdEquipos")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Control.Data.Entidades.Laboratorios", "Laboratorio")
-                        .WithMany("Incidencias")
-                        .HasForeignKey("LaboratorioIdLaboratorio")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Control.Data.Entidades.Usuario", "Usuario")
-                        .WithMany("Incidencias")
-                        .HasForeignKey("UsuarioIdUsuario")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Equipos");
-
-                    b.Navigation("Laboratorio");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("Control.Data.Entidades.Equipos", b =>
-                {
-                    b.Navigation("Incidencias");
-                });
-
-            modelBuilder.Entity("Control.Data.Entidades.Incidencias", b =>
-                {
-                    b.Navigation("AsignacionRecursos");
-
-                    b.Navigation("HistorialIncidencias");
-                });
-
-            modelBuilder.Entity("Control.Data.Entidades.Laboratorios", b =>
-                {
-                    b.Navigation("Equipos");
-
-                    b.Navigation("Incidencias");
-                });
-
-            modelBuilder.Entity("Control.Data.Entidades.Recursos", b =>
-                {
-                    b.Navigation("AsignacionRecursos");
-                });
-
-            modelBuilder.Entity("Control.Data.Entidades.Usuario", b =>
-                {
-                    b.Navigation("Incidencias");
+                    b.HasData(
+                        new
+                        {
+                            IdUsuario = 312122,
+                            CorreoUsuario = "Jorgito@upla.edu.pe",
+                            NombreUsuario = "Jorgito",
+                            RolUsuario = "Docente",
+                            TipoUsuario = "Principal"
+                        });
                 });
 #pragma warning restore 612, 618
         }

@@ -7,7 +7,7 @@ namespace Control.Data.Entidades
         [Key]
         public int IdUsuario { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="El nombre es obligatorio")]
         [MaxLength(100)]
         public string NombreUsuario { get; set; }
 
@@ -24,7 +24,7 @@ namespace Control.Data.Entidades
         [MaxLength(50)]
         public string RolUsuario { get; set; }
 
-        public ICollection<Incidencias> Incidencias { get; set; }
+        
 
     }
 }

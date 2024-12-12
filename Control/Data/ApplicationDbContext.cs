@@ -21,53 +21,61 @@ public class AplicacionDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
 
-        modelBuilder.Entity<Laboratorios>().HasData(
+        modelBuilder.Entity<Usuario>().HasData(
+            
+            new Usuario { IdUsuario = 312122, NombreUsuario  = "Jorgito", CorreoUsuario = "Jorgito@upla.edu.pe", RolUsuario = "Docente", TipoUsuario = "Principal"  }
+            
+            
+            );
 
-            new Laboratorios { IdLaboratorio = 23532, NombreLab = "LAB-01", Capacidad = 34, Ubicacion = "Upla-Huancayo", Incidencias = null, Equipos = null }
+        modelBuilder.Entity<AsignacionRecursos>().HasData(
+            
+            new AsignacionRecursos {  IdAsignacion = 123512, CantidadUtilizada = 34522}
+            
+            
+            );
 
+        modelBuilder.Entity<Equipos>().HasData(
+            
+            new Equipos {  IdEquipos = 34112, NombreEquipos = "LAB-01", FechaInst = new DateTime(2024, 12, 14), Modelo = "Lenovo"}
 
+            
+            
             );
 
 
-        modelBuilder.Entity<Equipos>().HasData(
-
-            new Equipos { IdEquipos = 23454, IdLaboratorio = null, Incidencias = null, NombreEquipos = "PC-01", FechaInst = new DateTime(2024, 12, 11), Laboratorio = null, Modelo = "Lenovo" }
-
-
+        modelBuilder.Entity<HistorialIncidencias>().HasData(
+            
+            new HistorialIncidencias { IdHistorial = 123553, Comentarios = "Esta computadora fue raparada", Accion = "Reparada", UsuarioRes = "Jorgito"}
+            
+            
             );
 
 
         modelBuilder.Entity<Incidencias>().HasData(
+            
+            new Incidencias { IdIncidencias = 1251222, DescInc = "Sucedio mientras alguien movia..", FechaReporte = new DateTime(2024, 12, 05), FechaSolucion = new DateTime (2024, 12, 15)}
+            
+            
+            
+            );
 
-            new Incidencias { IdIncidencias = 23545, IdLaboratorio = null, HistorialIncidencias = null, AsignacionRecursos = null, DescInc = "Se malogró una pc", Equipos = null, IdUsuario = null, IdEquipos = null, Laboratorio = null, Usuario = null, FechaReporte = new DateTime(2024, 12, 15), FechaSolucion = new DateTime(2024, 12, 18) }
-
-
+        modelBuilder.Entity<Laboratorios>().HasData(
+            
+            new Laboratorios {  IdLaboratorio = 34123, NombreLab = "LAB-01", Capacidad = 25, Ubicacion = "Upla-Huancayo"}
+            
+            
             );
 
         modelBuilder.Entity<Recursos>().HasData(
-
-            new Recursos { IdRecursos = 34532, DesRec = "Se requiere un monto especifico para este trabajo", NombreRec = "Recurso-01", AsignacionRecursos = null }
-
-
+            
+            new Recursos { IdRecursos = 235121, NombreRec = "Recurso compartido", DesRec = "Se necesito el recurso"}
+            
+            
             );
 
-        modelBuilder.Entity<AsignacionRecursos>().HasData(
 
-            new AsignacionRecursos { IdAsignacion = 23564, CantidadUtilizada = 23444, IdRecursos = 34532, Incidencias = null, IdIncidencias = 23545, Recursos = null }
-
-            );
-
-        modelBuilder.Entity<HistorialIncidencias>().HasData(
-
-            new HistorialIncidencias { IdHistorial = 57622, Comentarios = "Se malogró una pc", Incidencias = null, Accion = "Corregida", IdIncidencias = null, UsuarioResponsable = "Jorge" }
-
-            );
-
-        modelBuilder.Entity<Usuario>().HasData(
-
-            new Usuario { IdUsuario = 23223, CorreoUsuario = "jorgito@upla.edu.pe", Incidencias = null, NombreUsuario = "Jorge", RolUsuario = "Ingeniero", TipoUsuario = "Desarrollador" }
-
-            );
+        
         
         
 

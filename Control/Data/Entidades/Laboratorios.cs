@@ -6,7 +6,7 @@ namespace Control.Data.Entidades
     {
 
         [Key]
-        public int? IdLaboratorio { get; set; }
+        public int IdLaboratorio { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -18,7 +18,6 @@ namespace Control.Data.Entidades
         [Required]
         public int Capacidad { get; set; }
 
-        public ICollection<Incidencias> Incidencias { get; set; }
-        public ICollection<Equipos> Equipos { get; set; }
+        
     }
 }
