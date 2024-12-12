@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Control.Data.Entidades
 {
@@ -11,6 +12,9 @@ namespace Control.Data.Entidades
         [Range(0, int.MaxValue)]
         public int CantidadUtilizada { get; set; }
 
+
+       
     }
-    
 }
+    
+

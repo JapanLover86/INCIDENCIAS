@@ -6,7 +6,7 @@ namespace Control.Data.Entidades
     {
 
         [Key]
-        public int? IdRecursos { get; set; }
+        public int IdRecursos { get; set; }
 
         [Required]
         [MaxLength(100)]

@@ -8,10 +8,10 @@ public class AplicacionDbContext : DbContext
     public AplicacionDbContext(DbContextOptions<AplicacionDbContext> options) : base(options) { }
 
     // DbSet para cada entidad
-    public DbSet<Usuario> usuarios { get; set; }
-    public DbSet<Incidencias> incidencias { get; set; }
-    public DbSet<AsignacionRecursos> asignacionRecursos { get; set; }
-    public DbSet<Equipos> equipos { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<Incidencias> Incidencias { get; set; }
+    public DbSet<AsignacionRecursos> AsignacionRecursos { get; set; }
+    public DbSet<Equipos> Equipos { get; set; }
     public DbSet<HistorialIncidencias> historialIncidencias { get; set; }
     public DbSet<Laboratorios> laboratorios { get; set; }
     public DbSet<Recursos> recursos { get; set; }
@@ -46,7 +46,7 @@ public class AplicacionDbContext : DbContext
 
         modelBuilder.Entity<HistorialIncidencias>().HasData(
             
-            new HistorialIncidencias { IdHistorial = 123553, Comentarios = "Esta computadora fue raparada", Accion = "Reparada", UsuarioRes = "Jorgito"}
+            new HistorialIncidencias { IdHistorial = 123553, Comentarios = "Esta computadora fue reparada", Accion = "Reparada", UsuarioRes = "Jorgito"}
             
             
             );

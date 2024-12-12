@@ -14,7 +14,7 @@ namespace Control.Repositorio
 
         public async Task<Equipos> Agregar(Equipos equipos)
         {
-            await contextodb.equipos.AddAsync(equipos);
+            await contextodb.Equipos.AddAsync(equipos);
             await contextodb.SaveChangesAsync();
             return equipos;
         }
@@ -27,7 +27,7 @@ namespace Control.Repositorio
             }
             try
             {
-                contextodb.equipos.Remove(equipos);
+                contextodb.Equipos.Remove(equipos);
                 await contextodb.SaveChangesAsync();
                 return equipos;
             }
@@ -39,12 +39,12 @@ namespace Control.Repositorio
 
         public async Task<IEnumerable<Equipos>> GetAll()
         {
-            return await contextodb.equipos.ToListAsync();
+            return await contextodb.Equipos.ToListAsync();
         }
 
         public async Task<IEnumerable<Equipos>> GetOne(int id)
         {
-            var buscarEquipos = await contextodb.equipos.FirstOrDefaultAsync(e => e.IdEquipos == id);
+            var buscarEquipos = await contextodb.Equipos.FirstOrDefaultAsync(e => e.IdEquipos == id);
             if (buscarEquipos is null )
             {
                 new Equipos();
@@ -54,10 +54,10 @@ namespace Control.Repositorio
 
         public async  Task<Equipos> Modificar(Equipos equipos)
         {
-            var modificarEquipo = await contextodb.equipos.FirstOrDefaultAsync<Equipos>();
+            var modificarEquipo = await contextodb.Equipos.FirstOrDefaultAsync<Equipos>();
             if (modificarEquipo is not null)
             {
-                contextodb.equipos.Update(equipos);
+                contextodb.Equipos.Update(equipos);
                 await contextodb.SaveChangesAsync();
                 return modificarEquipo;
             }

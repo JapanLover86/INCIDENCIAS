@@ -16,7 +16,7 @@ namespace Control.Repositorio
 
         public async Task<AsignacionRecursos> Agregar (AsignacionRecursos asignacionRecursos)
         {
-            await contextodb.asignacionRecursos.AddAsync(asignacionRecursos);
+            await contextodb.AsignacionRecursos.AddAsync(asignacionRecursos);
             await contextodb.SaveChangesAsync();
             return asignacionRecursos;
         }
@@ -29,7 +29,7 @@ namespace Control.Repositorio
             }
             try
             {
-                contextodb.asignacionRecursos.Remove(asignacionRecursos);
+                contextodb.AsignacionRecursos.Remove(asignacionRecursos);
                 await contextodb.SaveChangesAsync();
                 return asignacionRecursos;
             }
@@ -42,12 +42,12 @@ namespace Control.Repositorio
 
         public async Task<IEnumerable<AsignacionRecursos>> GetAll()
         {
-            return await contextodb.asignacionRecursos.ToListAsync();
+            return await contextodb.AsignacionRecursos.ToListAsync();
         }
 
         public async Task<IEnumerable<AsignacionRecursos>> GetOne(int id)
         {
-            var resultBusqueda = await contextodb.asignacionRecursos.FirstOrDefaultAsync(c => c.IdAsignacion == id); //LinQ arquitectura de ado.net
+            var resultBusqueda = await contextodb.AsignacionRecursos.FirstOrDefaultAsync(c => c.IdAsignacion == id); //LinQ arquitectura de ado.net
             if (resultBusqueda is null)
             {
                  new AsignacionRecursos(); //No sirve para web , para intranet si
@@ -59,11 +59,11 @@ namespace Control.Repositorio
 
         public async Task<AsignacionRecursos> Modificar(AsignacionRecursos asignacionRecursos)
         {
-            var modificarRecurso = await contextodb.asignacionRecursos.FirstOrDefaultAsync(c => c.IdAsignacion == asignacionRecursos.IdAsignacion);
+            var modificarRecurso = await contextodb.AsignacionRecursos.FirstOrDefaultAsync(c => c.IdAsignacion == asignacionRecursos.IdAsignacion);
             if(modificarRecurso is not null)
             {
                 asignacionRecursos.CantidadUtilizada = modificarRecurso.CantidadUtilizada;
-                contextodb.asignacionRecursos.Update(asignacionRecursos);   
+                contextodb.AsignacionRecursos.Update(asignacionRecursos);   
                 return modificarRecurso;
             }
             return asignacionRecursos;  
