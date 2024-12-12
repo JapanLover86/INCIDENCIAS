@@ -22,7 +22,7 @@ else
         <div class="card-body py-4">
             <div class="row pb-3">
                 <div class="col text-end">
-                    <a href="producto/agregar" class="btn btn-secondary" style="width:250px;">
+                    <a href="equipos/agregar" class="btn btn-secondary" style="width:250px;">
                         <i class="bi bi-plus-circle"></i> Agregar nuevo producto
                     </a>
                 </div>
@@ -34,12 +34,10 @@ else
                     <thead>
                         <tr>
                             <th>Nombres</th>
-                            <th>Acciones</th>
-                            <th>Acciones</th>
-                            <th>Acciones</th>
-                            <th>Acciones</th>
-                            <th>Acciones</th>
-                            <th>Acciones</th>
+                            <th>Nombres</th>
+                            <th>Modelo</th>
+                            <th>Fecha de instalación</th>
+                            
                         </tr>
                     </thead>
 
@@ -47,7 +45,7 @@ else
                         @foreach (var item in equipos)
                         {
                             <tr>
-                                <td>@item.</td>
+                                <td>@item.IdEquipos</td>
                                 <td>
                                     <a href="@($"producto/modificar/{item.IdEquipos}")" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modificar
@@ -57,11 +55,10 @@ else
                                         <i class="bi bi-trash"></i> Eliminar
                                     </a>
                                 </td>
-                                <td>@item.</td>
-                                <td>@item.</td>
-                                <td>@item.</td>
-                                <td>@item.</td>
-                                <td>@item.</td>
+                                <td>@item.NombreEquipos</td>
+                                <td>@item.Modelo</td>
+                                <td>@item.FechaInst</td>
+                                
                             </tr>
                         }
                     </tbody>
@@ -87,13 +84,13 @@ else
         if (firstRender)
         {
             Cargando = true;
-            await CargandoIncidencias();
+            await CargandoEquipos();
             Cargando = false;
             StateHasChanged();
         }
     }
 
-    public async Task CargandoIncidencias()
+    public async Task CargandoEquipos()
     {
         equipos = await _equiposRepositorio.GetAll();
     }

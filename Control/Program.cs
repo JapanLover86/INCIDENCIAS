@@ -18,6 +18,7 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 builder.Services.AddScoped<IIncidenciasRepositorio, IncidenciasRepositorio>();
 builder.Services.AddScoped<IAsignacionrecursosRepositorio, AsignacionrecursosRepositorio>();
+builder.Services.AddScoped<IEquiposRepositorio, EquiposRepositorio>();
 
 builder.Services.AddAuthentication(options =>
     {
