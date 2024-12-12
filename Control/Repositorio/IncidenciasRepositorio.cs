@@ -41,14 +41,14 @@ namespace Control.Repositorio
 
         public async Task<IEnumerable<Incidencias>> GetAll()
         {
-            return await contextodb.Incidencias.ToListAsync();
+            return await contextodb.incidencias.ToListAsync();
 
             
         }
 
         public async Task<IEnumerable<Incidencias>> GetOne(int id)
         {
-            var buscarIncidente = await contextodb.Incidencias.FirstOrDefaultAsync();
+            var buscarIncidente = await contextodb.incidencias.FirstOrDefaultAsync();
             if (buscarIncidente == null)
             {
                 new Incidencias();
@@ -60,7 +60,7 @@ namespace Control.Repositorio
 
         public async Task<Incidencias> Modificar (Incidencias incidencias)
         {
-            var modifcarInciddencias = await contextodb.Incidencias.FirstOrDefaultAsync(i => i.IdIncidencias == incidencias.IdIncidencias);
+            var modifcarInciddencias = await contextodb.incidencias.FirstOrDefaultAsync(i => i.IdIncidencias == incidencias.IdIncidencias);
             if (modifcarInciddencias is not null)
             {
                 incidencias.DescInc = modifcarInciddencias.DescInc;

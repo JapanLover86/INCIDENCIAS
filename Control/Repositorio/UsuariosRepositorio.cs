@@ -15,7 +15,7 @@ namespace Control.Repositorio
 
         public async Task<Usuario> Agregar(Usuario usuario)
         {
-            await contextodb.Usuarios.AddAsync(usuario);
+            await contextodb.usuarios.AddAsync(usuario);
             await contextodb.SaveChangesAsync();
             return usuario;
 
@@ -30,7 +30,7 @@ namespace Control.Repositorio
 
             try
             {
-                contextodb.Usuarios.Remove(usuario);
+                contextodb.usuarios.Remove(usuario);
                 await contextodb.SaveChangesAsync();
                 return usuario;
             }
@@ -42,12 +42,12 @@ namespace Control.Repositorio
 
         public async Task<IEnumerable<Usuario>> GetAll()
         {
-            return await contextodb.Usuarios.ToListAsync();
+            return await contextodb.usuarios.ToListAsync();
         }
 
         public async Task<IEnumerable<Usuario>> GetOne(int id)
         {
-            var usuario = await contextodb.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == id);
+            var usuario = await contextodb.usuarios.FirstOrDefaultAsync(u => u.IdUsuario == id);
             if (usuario == null)
             {
                 throw new KeyNotFoundException($"No se encontró un usuario con el ID {id}");
@@ -57,14 +57,14 @@ namespace Control.Repositorio
 
         public async Task<Usuario> Modificar(Usuario usuario)
         {
-            var modificarUsuario = await contextodb.Usuarios.FirstOrDefaultAsync(u => u.IdUsuario == usuario.IdUsuario);
+            var modificarUsuario = await contextodb.usuarios.FirstOrDefaultAsync(u => u.IdUsuario == usuario.IdUsuario);
             if(modificarUsuario == null)
             {
                 throw new KeyNotFoundException($"No se encontró un usuario con el ID");
             }
             try
             {
-                contextodb.Usuarios.Update(usuario);
+                contextodb.usuarios.Update(usuario);
                 await contextodb.SaveChangesAsync();
                 return usuario;
             }
