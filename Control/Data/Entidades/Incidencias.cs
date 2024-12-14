@@ -9,7 +9,7 @@ namespace Control.Data.Entidades
         [Range(0, 99999, ErrorMessage ="El rango como máximo es de cinco dígitos")]
         public int IdIncidencias { get; set; }
 
-        [Required]
+        [StringLength(5, ErrorMessage = "La descripción debe tener 5 caracteres")]
         [MaxLength(500)]
         public string DescInc { get; set; }
 

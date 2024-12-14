@@ -1,5 +1,53 @@
-﻿<h3>IncidenciasAgregar</h3>
+﻿@page "/incidencias/agregar"
+@inject IIncidenciasRepositorio _incidenciasRepositorio
+@inject NavigationManager NavigationManager
+
+<h3>Agregar Nueva Incidencia</h3>
+
+<EditForm Model="incidencia" OnValidSubmit="AgregarIncidencia">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="descInc">Descripción</label>
+        <InputText id="descInc" class="form-control" @bind-Value="incidencia.DescInc" />
+    </div>
+
+    <div class="form-group">
+        <label for="fechaReporte">Fecha de Reporte</label>
+        <InputDate id="fechaReporte" class="form-control" @bind-Value="incidencia.FechaReporte" />
+    </div>
+
+    <div class="form-group">
+        <label for="fechaSolucion">Fecha de Solución</label>
+        <InputDate id="fechaSolucion" class="form-control" @bind-Value="incidencia.FechaSolucion" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Agregar</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
 
 @code {
+    private Incidencias incidencia = new Incidencias();
 
+    private async Task AgregarIncidencia()
+    {
+        try
+        {
+            if (incidencia != null)
+            {
+                await _incidenciasRepositorio.Agregar(incidencia);
+                NavigationManager.NavigateTo("/incidencias");  // Redirige al listado de incidencias
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al agregar la incidencia: {ex.Message}");
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/incidencias");  // Redirige al listado de incidencias si se cancela la creación
+    }
 }

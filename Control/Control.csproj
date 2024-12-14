@@ -10,16 +10,12 @@
   <ItemGroup>
     <Compile Remove="Components\Pages\PagesAsignacion\**" />
     <Compile Remove="Components\Pages\PagesEquipos\**" />
-    <Compile Remove="Components\Pages\PagesHistorial\**" />
     <Content Remove="Components\Pages\PagesAsignacion\**" />
     <Content Remove="Components\Pages\PagesEquipos\**" />
-    <Content Remove="Components\Pages\PagesHistorial\**" />
     <EmbeddedResource Remove="Components\Pages\PagesAsignacion\**" />
     <EmbeddedResource Remove="Components\Pages\PagesEquipos\**" />
-    <EmbeddedResource Remove="Components\Pages\PagesHistorial\**" />
     <None Remove="Components\Pages\PagesAsignacion\**" />
     <None Remove="Components\Pages\PagesEquipos\**" />
-    <None Remove="Components\Pages\PagesHistorial\**" />
   </ItemGroup>
 
   <ItemGroup>

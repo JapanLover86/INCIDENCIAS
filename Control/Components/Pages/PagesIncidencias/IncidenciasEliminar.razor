@@ -1,0 +1,56 @@
+﻿@page "/incidencias/eliminar/{id:int}"
+@inject IIncidenciasRepositorio _incidenciasRepositorio
+@inject NavigationManager NavigationManager
+
+<h3>Eliminar Incidencia</h3>
+
+<p>¿Está seguro de que desea eliminar la incidencia <strong>@incidencia.DescInc</strong>?</p>
+
+<button class="btn btn-danger" @onclick="EliminarIncidencia">Eliminar</button>
+<button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+
+@code {
+    [Parameter] public int id { get; set; }
+    private Incidencias incidencia = new Incidencias();
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Obtener la incidencia por el ID
+        var incidencias = await _incidenciasRepositorio.GetAll();
+        incidencia = incidencias.FirstOrDefault(p => p.IdIncidencias == id);
+
+        // Si la incidencia no existe, redirigir al listado de incidencias.
+        if (incidencia == null)
+        {
+            NavigationManager.NavigateTo("/incidencias");
+        }
+    }
+
+    private async Task EliminarIncidencia()
+    {
+        try
+        {
+            if (incidencia != null)
+            {
+                await _incidenciasRepositorio.Eliminar(incidencia);  // Eliminar la incidencia
+                NavigationManager.NavigateTo("/incidencias");  // Redirigir al listado de incidencias después de eliminar
+            }
+            else
+            {
+                // En caso de que no se haya encontrado la incidencia
+                NavigationManager.NavigateTo("/incidencias");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Manejar errores, por ejemplo, mostrar un mensaje de error
+            Console.WriteLine($"Error al eliminar la incidencia: {ex.Message}");
+        }
+    }
+
+    private void Cancelar()
+    {
+        // Redirigir al listado de incidencias si se cancela la eliminación
+        NavigationManager.NavigateTo("/incidencias");
+    }
+}

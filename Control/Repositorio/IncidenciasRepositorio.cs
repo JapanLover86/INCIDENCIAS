@@ -21,10 +21,9 @@ namespace Control.Repositorio
 
         public async Task<Incidencias> Eliminar(Incidencias incidencias)
         {
-            if (incidencias is null) 
+            if (incidencias == null)
             {
-                throw new ArgumentNullException(nameof(incidencias),"Las incidencias no deben de ser nulos");
-
+                throw new ArgumentNullException(nameof(incidencias), "Las incidencias no deben ser nulos");
             }
             try
             {
@@ -32,11 +31,10 @@ namespace Control.Repositorio
                 await contextodb.SaveChangesAsync();
                 return incidencias;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                throw new Exception($"Error al eliminar el incidente {incidencias.IdIncidencias} ",ex);
+                throw new Exception($"Error al eliminar el incidente {incidencias.IdIncidencias}", ex);
             }
-
         }
 
         public async Task<IEnumerable<Incidencias>> GetAll()
@@ -52,22 +50,24 @@ namespace Control.Repositorio
             if (buscarIncidente == null)
             {
                 new Incidencias();
-            
+
             }
             return (IEnumerable<Incidencias>)buscarIncidente;
-            
+
         }
 
         public async Task<Incidencias> Modificar (Incidencias incidencias)
         {
-            var modifcarInciddencias = await contextodb.incidencias.FirstOrDefaultAsync(i => i.IdIncidencias == incidencias.IdIncidencias);
-            if (modifcarInciddencias is not null)
+            var modifcarIncidencias = await contextodb.incidencias.FirstOrDefaultAsync(i => i.IdIncidencias == incidencias.IdIncidencias);
+            if (modifcarIncidencias != null)
             {
-                incidencias.DescInc = modifcarInciddencias.DescInc;
+                modifcarIncidencias.DescInc = incidencias.DescInc;
+                modifcarIncidencias.FechaReporte = incidencias.FechaReporte;
+                modifcarIncidencias.FechaSolucion = incidencias.FechaSolucion;
                 await contextodb.SaveChangesAsync();
-                return incidencias;
+                return modifcarIncidencias;
             }
-            return incidencias;
+            return null;
         }
     }
 }
