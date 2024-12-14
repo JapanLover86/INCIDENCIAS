@@ -32,10 +32,10 @@ else
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>ASIGNACIÓN</th>
-                            <th>INCIDENCIA</th>
-                            <th>CANTIDAD</th>
-                            <th>RECURSOS</th>
+                            <th>CÓDIGO DE ASIGNACIÓN</th>
+                            
+                            <th>CANTIDAD EN SOLES</th>
+                            
                             
                         </tr>
                     </thead>
@@ -44,9 +44,7 @@ else
                         {
                             <tr>
                                 <td>@item.IdAsignacion</td>
-                                <td>@item</td>
-                                <td>@item.CantidadUtilizada</td>
-                                <td>@item</td>
+                                <td>@item.CantidadUtilizada</td> <!-- Asegúrate de usar una propiedad específica -->
                                 
                                 <td>
                                     <a href="@($"asignacion/modificar/{item.IdAsignacion}")" class="btn btn-primary">
@@ -59,6 +57,7 @@ else
                             </tr>
                         }
                     </tbody>
+
                 </table>
             }
             else

@@ -1,4 +1,85 @@
-﻿@page "/asignacion/eliminar/{Id:int}"
+﻿@page "/asignacion/eliminar/{id:int}"
 @inject IAsignacionrecursosRepositorio _asignacionRepositorio
 @inject NavigationManager NavigationManager
+@inject ILogger<AsignarEliminar> Logger
 
+<div class="container mt-4">
+    <div class="card shadow border-0">
+        <div class="card-header bg-danger text-white text-center py-3">
+            <h3>Eliminar Asignación</h3>
+        </div>
+        <div class="card-body">
+            @if (asignacion == null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    La asignación no se encontró.
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning" role="alert">
+                    ¿Estás seguro que deseas eliminar la asignación con ID: <strong>@asignacion.IdAsignacion</strong>?
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger" @onclick="EliminarAsignacion">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                    <button class="btn btn-secondary" @onclick="Cancelar">
+                        <i class="bi bi-arrow-left-circle"></i> Cancelar
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int id { get; set; }
+    private AsignacionRecursos? asignacion;
+    private string ErrorMessage = string.Empty;
+    private string mensajeError = "";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var asignacionRepositorio = await _asignacionRepositorio.GetAll();
+            asignacion = asignacionRepositorio.FirstOrDefault(p => p.IdAsignacion == id);
+
+            if (asignacion == null)
+            {
+                mensajeError = "Producto no encontrado";
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            mensajeError = $"Error al cargar los productos: {ex.Message}";
+        }
+    }
+
+    private async Task EliminarAsignacion()
+    {
+        try
+        {
+            if (asignacion != null)
+            {
+                await _asignacionRepositorio.Eliminar(asignacion);
+
+                NavigationManager.NavigateTo("/asignaciones");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error al eliminar la asignación.");
+            ErrorMessage = "Ocurrió un error al eliminar la asignación: " + ex.Message;
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/asignaciones");
+    }
+}

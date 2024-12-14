@@ -2,34 +2,62 @@
 @inject IAsignacionrecursosRepositorio _asignacionRepositorio
 @inject NavigationManager NavigationManager
 
-<h3>Asignar Recurso</h3>
+<div class="container mt-4">
+    <div class="card shadow border-0">
+        <div class="card-header bg-dark text-white text-center py-3">
+            <h3>Agregar Asignación de Recurso</h3>
+        </div>
+        <div class="card-body">
+            <EditForm Model="@asignacion" OnValidSubmit="@AsignarRecurso">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
 
-<EditForm Model="@asignacion" OnValidSubmit="@AsignarRecurso">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+                <div class="mb-3">
+                    <label for="cantidadUtilizada" class="form-label">Cantidad Utilizada</label>
+                    <InputNumber id="cantidadUtilizada" class="form-control" @bind-Value="@asignacion.CantidadUtilizada" />
 
-    <div class="mb-3">
-        <label for="cantidadUtilizada" class="form-label">Cantidad Utilizada</label>
-        <InputNumber id="cantidadUtilizada" class="form-control" @bind-Value="@asignacion.CantidadUtilizada" />
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Guardar
+                    </button>
+                    <button type="button" class="btn btn-secondary" @onclick="Cancelar">
+                        <i class="bi bi-arrow-left-circle"></i> Cancelar
+                    </button>
+                </div>
+            </EditForm>
+
+            @if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                <div class="alert alert-danger mt-3" role="alert">
+                    @ErrorMessage
+                </div>
+            }
+        </div>
     </div>
-
-    <button type="submit" class="btn btn-success">Asignar</button>
-</EditForm>
+</div>
 
 @code {
     private AsignacionRecursos asignacion = new AsignacionRecursos();
+
+    private string ErrorMessage = string.Empty;
 
     private async Task AsignarRecurso()
     {
         try
         {
             await _asignacionRepositorio.Agregar(asignacion);
-            NavigationManager.NavigateTo("/asignacion/lista");
+            NavigationManager.NavigateTo("/asignaciones"); // Ruta a la lista
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al asignar el recurso: {ex.Message}");
-            // Aquí podrías mostrar un mensaje de error más descriptivo
+            ErrorMessage = "Ocurrió un error al guardar la asignación: " + ex.Message;
         }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/asignaciones"); // Ruta a la lista
     }
 }

@@ -6,11 +6,13 @@ namespace Control.Data.Entidades
     public class AsignacionRecursos
     {
         [Key]
+        [Required(ErrorMessage = "La cantidad utilizada es obligatoria")]
         public int IdAsignacion { get; set; }
 
-        [Required]
-        [Range(0, int.MaxValue)]
-        public int CantidadUtilizada { get; set; }
+        [Required(ErrorMessage = "La cantidad utilizada es obligatoria")]
+        [Range(1.0, double.MaxValue, ErrorMessage = "La cantidad debe ser mayor a 0")]
+
+        public double CantidadUtilizada { get; set; }
 
 
        

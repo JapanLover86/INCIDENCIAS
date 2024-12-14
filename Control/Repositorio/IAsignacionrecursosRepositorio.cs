@@ -1,4 +1,5 @@
 ﻿using Control.Data.Entidades;
+using System.Threading.Tasks;
 
 namespace Control.Repositorio
 {
@@ -11,10 +12,12 @@ namespace Control.Repositorio
 
         public Task <AsignacionRecursos> Eliminar(AsignacionRecursos asignacionRecursos);
 
-        public Task<IEnumerable<AsignacionRecursos>> GetOne(int id);
+        public Task<IEnumerable<AsignacionRecursos?>> GetOne(int id);
 
         public Task<IEnumerable<AsignacionRecursos>> GetAll();
-        
+
+        public Task Actualizar(AsignacionRecursos asignacionRecursos);
+
 
 
     }

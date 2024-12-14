@@ -1,4 +1,100 @@
-﻿@page "/asignacion/modificar/{Id:int}"
+﻿@page "/asignacion/modificar/{id:int}"
 @inject IAsignacionrecursosRepositorio _asignacionRepositorio
 @inject NavigationManager NavigationManager
+@inject ILogger<AsignarModificar> Logger
 
+<div class="container mt-4">
+    <div class="card shadow border-0">
+        <div class="card-header bg-dark text-white text-center py-3">
+            <h3>Modificar Asignación</h3>
+        </div>
+        <div class="card-body">
+            @if (asignacion == null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    La asignación no se encontró.
+                </div>
+            }
+            else
+            {
+                <EditForm Model="@asignacion" OnValidSubmit="@ActualizarAsignacion">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="mb-3">
+                        <label for="cantidadUtilizada" class="form-label">Cantidad Utilizada</label>
+                        <InputNumber id="cantidadUtilizada" class="form-control" @bind-Value="@asignacion.CantidadUtilizada" />
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle"></i> Guardar Cambios
+                        </button>
+                        <button type="button" class="btn btn-secondary" @onclick="Cancelar">
+                            <i class="bi bi-arrow-left-circle"></i> Cancelar
+                        </button>
+                    </div>
+                </EditForm>
+
+                @if (!string.IsNullOrEmpty(ErrorMessage))
+                {
+                    <div class="alert alert-danger mt-3" role="alert">
+                        @ErrorMessage
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int id { get; set; }
+    private AsignacionRecursos? asignacion;
+    private string ErrorMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // Recupera todos los productos
+            var asignacionRepositorio = await _asignacionRepositorio.GetAll();
+
+            // Filtra el producto específico por su Id
+            asignacion = asignacionRepositorio.FirstOrDefault(p => p.IdAsignacion == id);
+
+            if (asignacion == null)
+            {
+                Console.WriteLine($"No se encontró el producto con Id {id}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar el producto: {ex.Message}");
+        }
+
+
+    }
+
+    private async Task ActualizarAsignacion()
+    {
+        try
+        {
+            if (asignacion != null)
+            {
+                // Actualizamos la asignación
+                await _asignacionRepositorio.Actualizar(asignacion);
+                NavigationManager.NavigateTo("/asignaciones");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error al actualizar la asignación.");
+            ErrorMessage = "Ocurrió un error al actualizar la asignación: " + ex.Message;
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/asignaciones");
+    }
+}

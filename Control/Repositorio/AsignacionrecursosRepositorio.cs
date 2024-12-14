@@ -47,14 +47,8 @@ namespace Control.Repositorio
 
         public async Task<IEnumerable<AsignacionRecursos>> GetOne(int id)
         {
-            var resultBusqueda = await contextodb.asignacionRecursos.FirstOrDefaultAsync(c => c.IdAsignacion == id); //LinQ arquitectura de ado.net
-            if (resultBusqueda is null)
-            {
-                 new AsignacionRecursos(); //No sirve para web , para intranet si
-            }
-            return (IEnumerable<AsignacionRecursos>)resultBusqueda;
-
-
+            var resultBusqueda = await contextodb.asignacionRecursos.FirstOrDefaultAsync(c => c.IdAsignacion == id);
+            return (IEnumerable<AsignacionRecursos>)resultBusqueda; 
         }
 
         public async Task<AsignacionRecursos> Modificar(AsignacionRecursos asignacionRecursos)
@@ -68,5 +62,25 @@ namespace Control.Repositorio
             }
             return asignacionRecursos;  
         }
+
+
+        public async Task Actualizar(AsignacionRecursos asignacion)
+        {
+            var asignacionExistente = await contextodb.asignacionRecursos.FindAsync(asignacion.IdAsignacion);
+            if (asignacionExistente != null)
+            {
+                asignacionExistente.CantidadUtilizada = asignacion.CantidadUtilizada;
+                contextodb.asignacionRecursos.Update(asignacionExistente); // Rastreo explícito
+                await contextodb.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("La asignación no se encontró para actualizar.");
+            }
+        }
+
+
+
+
     }
 }
