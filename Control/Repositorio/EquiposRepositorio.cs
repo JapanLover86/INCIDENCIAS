@@ -45,11 +45,11 @@ namespace Control.Repositorio
         public async Task<IEnumerable<Equipos>> GetOne(int id)
         {
             var buscarEquipos = await contextodb.equipos.FirstOrDefaultAsync(e => e.IdEquipos == id);
-            if (buscarEquipos is null )
+            if (buscarEquipos != null)
             {
-                new Equipos();
+                return new List<Equipos> { buscarEquipos };  // Devolverlo como una lista
             }
-            return (IEnumerable<Equipos>)buscarEquipos;
+            return new List<Equipos>();
         }
 
         public async  Task<Equipos> Modificar(Equipos equipos)

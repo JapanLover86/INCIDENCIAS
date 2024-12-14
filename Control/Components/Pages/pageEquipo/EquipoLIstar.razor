@@ -1,7 +1,6 @@
 ﻿@page "/equipos"
 @inject IEquiposRepositorio _equiposRepositorio
 
-
 @if (Cargando)
 {
     <div class="poition-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
@@ -14,7 +13,7 @@ else
         <div class="card-header bg-black bg-gradient m-lg-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h2 class="text-white py-2">Lista de Productos</h2>
+                    <h2 class="text-white py-2">Lista de Equipos</h2>
                 </div>
             </div>
         </div>
@@ -23,7 +22,7 @@ else
             <div class="row pb-3">
                 <div class="col text-end">
                     <a href="equipos/agregar" class="btn btn-secondary" style="width:250px;">
-                        <i class="bi bi-plus-circle"></i> Agregar nuevo producto
+                        <i class="bi bi-plus-circle"></i> Agregar nuevo equipo
                     </a>
                 </div>
             </div>
@@ -33,11 +32,11 @@ else
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Nombres</th>
-                            <th>Nombres</th>
+                            <th>ID</th>
+                            <th>Nombre</th>
                             <th>Modelo</th>
                             <th>Fecha de instalación</th>
-                            
+                            <th>Acciones</th>
                         </tr>
                     </thead>
 
@@ -46,19 +45,17 @@ else
                         {
                             <tr>
                                 <td>@item.IdEquipos</td>
+                                <td>@item.NombreEquipos</td>
+                                <td>@item.Modelo</td>
+                                <td>@item.FechaInst.ToString("dd/MM/yyyy")</td>
                                 <td>
-                                    <a href="@($"producto/modificar/{item.IdEquipos}")" class="btn btn-primary">
+                                    <a href="@($"equipos/modificar/{item.IdEquipos}")" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modificar
                                     </a>
-
-                                    <a href="@($"producto/eliminar/{item.IdEquipos}")" class="btn btn-danger">
+                                    <a href="@($"equipos/eliminar/{item.IdEquipos}")" class="btn btn-danger">
                                         <i class="bi bi-trash"></i> Eliminar
                                     </a>
                                 </td>
-                                <td>@item.NombreEquipos</td>
-                                <td>@item.Modelo</td>
-                                <td>@item.FechaInst</td>
-                                
                             </tr>
                         }
                     </tbody>
@@ -66,17 +63,14 @@ else
             }
             else
             {
-                <p class="text-center">No hay productos disponibles</p>
+                <p class="text-center">No hay equipos disponibles</p>
             }
         </div>
     </div>
 }
 
 @code {
-
-
     private bool Cargando { get; set; } = false;
-
     private IEnumerable<Equipos> equipos { get; set; } = new List<Equipos>();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

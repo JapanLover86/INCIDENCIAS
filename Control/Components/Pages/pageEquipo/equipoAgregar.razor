@@ -1,4 +1,50 @@
-﻿@page "/equipos/agregar" 
-@code {
+﻿@page "/equipos/agregar"
+@inject IEquiposRepositorio _equiposRepositorio
+@inject NavigationManager NavigationManager
 
+<h3>Agregar Nuevo Equipo</h3>
+
+<EditForm Model="@equipo" OnValidSubmit="GuardarEquipo">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="nombreEquipos" class="form-label">Nombre del Equipo</label>
+        <InputText id="nombreEquipos" class="form-control" @bind-Value="equipo.NombreEquipos" />
+    </div>
+
+    <div class="mb-3">
+        <label for="modelo" class="form-label">Modelo</label>
+        <InputText id="modelo" class="form-control" @bind-Value="equipo.Modelo" />
+    </div>
+
+    <div class="mb-3">
+        <label for="fechaInst" class="form-label">Fecha de Instalación</label>
+        <InputDate id="fechaInst" class="form-control" @bind-Value="equipo.FechaInst" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    private Equipos equipo = new Equipos();
+
+    private async Task GuardarEquipo()
+    {
+        try
+        {
+            await _equiposRepositorio.Agregar(equipo);
+            NavigationManager.NavigateTo("/equipos");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al agregar el equipo: {ex.Message}");
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/equipos");
+    }
 }

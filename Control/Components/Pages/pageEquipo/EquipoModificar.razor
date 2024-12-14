@@ -1,5 +1,68 @@
-﻿<h3>EquipoModificar</h3>
+﻿@page "/equipos/modificar/{id:int}"
+@inject IEquiposRepositorio _equiposRepositorio
+@inject NavigationManager NavigationManager
+
+<h3>Modificar Equipo</h3>
+
+<EditForm Model="@equipo" OnValidSubmit="ModificarEquipo">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="idEquipos" class="form-label">ID del Equipo</label>
+        <InputNumber id="idEquipos" class="form-control" @bind-Value="equipo.IdEquipos" Disabled />
+    </div>
+
+    <div class="mb-3">
+        <label for="nombreEquipos" class="form-label">Nombre del Equipo</label>
+        <InputText id="nombreEquipos" class="form-control" @bind-Value="equipo.NombreEquipos" />
+    </div>
+
+    <div class="mb-3">
+        <label for="modelo" class="form-label">Modelo</label>
+        <InputText id="modelo" class="form-control" @bind-Value="equipo.Modelo" />
+    </div>
+
+    <div class="mb-3">
+        <label for="fechaInst" class="form-label">Fecha de Instalación</label>
+        <InputDate id="fechaInst" class="form-control" @bind-Value="equipo.FechaInst" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
 
 @code {
+    [Parameter] public int id { get; set; }
+    private Equipos equipo = new Equipos();
 
+    protected override async Task OnInitializedAsync()
+    {
+        equipo = (await _equiposRepositorio.GetOne(id)).FirstOrDefault();
+        if (equipo == null)
+        {
+            Console.WriteLine("Equipo no encontrado");
+        }
+    }
+
+    private async Task ModificarEquipo()
+    {
+        try
+        {
+            if (equipo != null)
+            {
+                await _equiposRepositorio.Modificar(equipo);
+                NavigationManager.NavigateTo("/equipos");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al modificar el equipo: {ex.Message}");
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/equipos");
+    }
 }

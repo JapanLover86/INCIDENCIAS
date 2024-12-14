@@ -1,5 +1,53 @@
-﻿<h3>EquipoEliminar</h3>
+﻿@page "/equipos/eliminar/{id:int}"
+@inject IEquiposRepositorio _equiposRepositorio
+@inject NavigationManager NavigationManager
+
+<h3>Eliminar Equipo</h3>
+
+<p>¿Está seguro de que desea eliminar el equipo <strong>@equipo?.NombreEquipos</strong>?</p>
+
+<button class="btn btn-danger" @onclick="EliminarEquipo">Eliminar</button>
+<button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
 
 @code {
+    [Parameter] public int id { get; set; }
+    private Equipos equipo;
 
+    protected override async Task OnInitializedAsync()
+    {
+        // Obtener el equipo con el ID proporcionado
+        equipo = (await _equiposRepositorio.GetOne(id)).FirstOrDefault();
+
+        // Si no se encuentra el equipo, redirigir automáticamente al listado
+        if (equipo == null)
+        {
+            NavigationManager.NavigateTo("/equipos");
+        }
+    }
+
+    private async Task EliminarEquipo()
+    {
+        try
+        {
+            if (equipo != null)
+            {
+                // Eliminar el equipo usando el repositorio
+                await _equiposRepositorio.Eliminar(equipo);
+
+                // Redirigir al listado de equipos después de eliminar
+                NavigationManager.NavigateTo("/equipos");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Manejar cualquier error durante la eliminación
+            Console.WriteLine($"Error al eliminar el equipo: {ex.Message}");
+        }
+    }
+
+    private void Cancelar()
+    {
+        // Redirigir al listado de equipos si el usuario cancela la eliminación
+        NavigationManager.NavigateTo("/equipos");
+    }
 }
