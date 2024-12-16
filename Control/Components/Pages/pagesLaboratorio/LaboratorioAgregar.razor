@@ -1,5 +1,51 @@
-﻿<h3>LaboratorioAgregar</h3>
+﻿@page "/laboratorios/agregar"
+@inject ILaboratoriosRepositorio _laboratoriosRepositorio
+@inject NavigationManager NavigationManager
+
+<h3>Agregar Laboratorio</h3>
+
+<EditForm Model="@laboratorio" OnValidSubmit="@AgregarLaboratorio">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="nombreLab" class="form-label">Nombre del Laboratorio</label>
+        <InputText id="nombreLab" class="form-control" @bind-Value="@laboratorio.NombreLab" />
+    </div>
+
+    <div class="mb-3">
+        <label for="ubicacion" class="form-label">Ubicación</label>
+        <InputText id="ubicacion" class="form-control" @bind-Value="@laboratorio.Ubicacion" />
+    </div>
+
+    <div class="mb-3">
+        <label for="capacidad" class="form-label">Capacidad</label>
+        <InputNumber id="capacidad" class="form-control" @bind-Value="@laboratorio.Capacidad" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Agregar</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
 
 @code {
+    private Laboratorios laboratorio = new Laboratorios();
 
+    private async Task AgregarLaboratorio()
+    {
+        try
+        {
+            await _laboratoriosRepositorio.Agregar(laboratorio);
+            NavigationManager.NavigateTo("/laboratorios");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al agregar el laboratorio: {ex.Message}");
+            // Aquí podrías mostrar un mensaje de error más descriptivo
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/laboratorios");
+    }
 }

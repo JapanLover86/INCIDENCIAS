@@ -13,7 +13,7 @@ namespace Control.Repositorio
 
         public Task<Laboratorios> Eliminar (Laboratorios laboratorios);
 
-        public Task<IEnumerable<Laboratorios>> GetOne(int id);
+        Task<Laboratorios> GetOne(int id);
 
         public Task< IEnumerable<Laboratorios>> GetAll();
     }

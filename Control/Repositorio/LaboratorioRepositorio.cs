@@ -1,23 +1,22 @@
 ﻿using Control.Data;
-using Control;
 using Control.Data.Entidades;
-using Control.Migrations;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Control.Repositorio
 {
     public class LaboratorioRepositorio : ILaboratoriosRepositorio
     {
         private readonly AplicacionDbContext contextoDb;
-        
 
         public LaboratorioRepositorio(AplicacionDbContext dbContext)
         {
             contextoDb = dbContext;
-                
         }
 
-        public async Task<Data.Entidades.Laboratorios> Agregar(Data.Entidades.Laboratorios laboratorios)
+        public async Task<Laboratorios> Agregar(Laboratorios laboratorios)
         {
             if (laboratorios == null)
             {
@@ -36,7 +35,7 @@ namespace Control.Repositorio
             }
         }
 
-        public async Task<Data.Entidades.Laboratorios> Eliminar(Data.Entidades.Laboratorios laboratorios)
+        public async Task<Laboratorios> Eliminar(Laboratorios laboratorios)
         {
             if (laboratorios == null)
             {
@@ -51,12 +50,11 @@ namespace Control.Repositorio
             }
             catch (Exception ex)
             {
-                throw new Exception(
-                    $"Error al eliminar el laboratorio con ID {laboratorios.IdLaboratorio}", ex);
+                throw new Exception($"Error al eliminar el laboratorio con ID {laboratorios.IdLaboratorio}", ex);
             }
         }
 
-        public async Task<IEnumerable<Data.Entidades.Laboratorios>> GetAll()
+        public async Task<IEnumerable<Laboratorios>> GetAll()
         {
             try
             {
@@ -68,7 +66,7 @@ namespace Control.Repositorio
             }
         }
 
-        public async Task<IEnumerable<Data.Entidades.Laboratorios>> GetOne(int id)
+        public async Task<Laboratorios> GetOne(int id) // Cambiado de IEnumerable<Laboratorios> a Laboratorios
         {
             try
             {
@@ -79,16 +77,15 @@ namespace Control.Repositorio
                     throw new Exception($"No se encontró el laboratorio con ID {id}");
                 }
 
-                return (IEnumerable<Data.Entidades.Laboratorios>)resultado;
+                return resultado;
             }
-
             catch (Exception ex)
             {
                 throw new Exception($"Error al buscar el laboratorio con ID {id}", ex);
             }
         }
 
-        public async Task<Data.Entidades.Laboratorios> Modificar(Data.Entidades.Laboratorios laboratorios)
+        public async Task<Laboratorios> Modificar(Laboratorios laboratorios)
         {
             if (laboratorios == null)
             {
@@ -109,13 +106,10 @@ namespace Control.Repositorio
 
                 return labExistente;
             }
-
             catch (Exception ex)
             {
-                throw new Exception(
-                    $"Error al modificar el laboratorio con ID {laboratorios.IdLaboratorio}", ex);
+                throw new Exception($"Error al modificar el laboratorio con ID {laboratorios.IdLaboratorio}", ex);
             }
         }
     }
-    
 }

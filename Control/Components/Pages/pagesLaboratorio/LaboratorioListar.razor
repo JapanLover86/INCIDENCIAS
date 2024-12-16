@@ -1,5 +1,93 @@
-﻿<h3>LaboratorioListar</h3>
+﻿@page "/laboratorios"
+@inject ILaboratoriosRepositorio _laboratoriosRepositorio
+
+@if (Cargando)
+{
+    <div class="position-absolute w-75 h-75 d-flex flex-column align-items-center bg-white justify-content-center">
+        <img src="/Images/Carga.gif" alt="Cargando contenido..." />
+    </div>
+}
+else
+{
+    <div class="card shadow border-0 mt-4">
+        <div class="card-header bg-black bg-gradient m-lg-0 py-3">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="text-white py-2">Lista de Laboratorios</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body py-4">
+            <div class="row pb-3">
+                <div class="col text-end">
+                    <a href="laboratorios/agregar" class="btn btn-secondary" style="width:250px;">
+                        <i class="bi bi-plus-circle"></i> Agregar nuevo laboratorio
+                    </a>
+                </div>
+            </div>
+
+            @if (laboratorios.Any())
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID Laboratorio</th>
+                            <th>Nombre</th>
+                            <th>Ubicación</th>
+                            <th>Capacidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in laboratorios)
+                        {
+                            <tr>
+                                <td>@item.IdLaboratorio</td>
+                                <td>@item.NombreLab</td>
+                                <td>@item.Ubicacion</td>
+                                <td>@item.Capacidad</td>
+                                <td>
+                                    <a href="@($"laboratorios/modificar/{item.IdLaboratorio}")" class="btn btn-primary">
+                                        <i class="bi bi-pencil-square"></i> Modificar
+                                    </a>
+
+                                    <a href="@($"laboratorios/eliminar/{item.IdLaboratorio}")" class="btn btn-danger">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p class="text-center">No hay laboratorios disponibles</p>
+            }
+        </div>
+    </div>
+}
 
 @code {
+    private bool Cargando { get; set; } = false;
 
+    private IEnumerable<Laboratorios> laboratorios { get; set; } = new List<Laboratorios>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Cargando = true;
+            await CargarLaboratorios();
+            Cargando = false;
+            StateHasChanged();
+        }
+    }
+
+    public async Task CargarLaboratorios()
+    {
+        laboratorios = await _laboratoriosRepositorio.GetAll();
+    }
 }

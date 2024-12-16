@@ -1,5 +1,47 @@
-﻿<h3>LaboratorioEliminar</h3>
+﻿@page "/laboratorios/eliminar/{id:int}"
+@inject ILaboratoriosRepositorio _laboratoriosRepositorio
+@inject NavigationManager NavigationManager
+
+<h3>Eliminar Laboratorio</h3>
+
+@if (laboratorio != null)
+{
+    <div>
+        <p>¿Estás seguro que deseas eliminar el laboratorio <b>@laboratorio.NombreLab</b>?</p>
+        <button class="btn btn-danger" @onclick="EliminarLaboratorio">Eliminar</button>
+        <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+    </div>
+}
+else
+{
+    <p>Cargando datos del laboratorio...</p>
+}
 
 @code {
+    [Parameter] public int id { get; set; }
+    private Laboratorios laboratorio;
 
+    protected override async Task OnInitializedAsync()
+    {
+        laboratorio = await _laboratoriosRepositorio.GetOne(id);
+    }
+
+    private async Task EliminarLaboratorio()
+    {
+        try
+        {
+            await _laboratoriosRepositorio.Eliminar(laboratorio);
+            NavigationManager.NavigateTo("/laboratorios");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al eliminar el laboratorio: {ex.Message}");
+            // Aquí podrías mostrar un mensaje de error más descriptivo
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/laboratorios");
+    }
 }
