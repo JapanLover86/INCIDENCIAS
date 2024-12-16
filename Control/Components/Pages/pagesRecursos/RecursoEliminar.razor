@@ -1,5 +1,48 @@
-﻿<h3>RecursoEliminar</h3>
+﻿@page "/recursos/eliminar/{id:int}"
+@inject IRecursosRepositorio _recursosRepositorio
+@inject NavigationManager NavigationManager
+
+<h3>RecursoEliminar</h3>
+
+@if ( recursos != null)
+{
+    <div>
+        <p>¿Estas seguro que deseas eliminar el recurso? 
+            <b>@recursos.NombreRec</b>?
+        </p>
+        <button class="btn btn-danger" @onclick="EliminarRecurso">Eliminar</button>
+        <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+    </div>
+}
+else
+{
+    <p>Cargando datos del recurso....</p>
+}
 
 @code {
+    [Parameter] public int id { get; set; }
+    private Recursos recursos;
 
+    protected override async Task OnParametersSetAsync()
+    {
+        recursos = await _recursosRepositorio.GetOne(id);
+    }
+
+    private async Task EliminarRecurso()
+    {
+        try
+        {
+            await _recursosRepositorio.Eliminar(recursos);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al eliminar el recurso:{ex.Message}");
+        }
+
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/recursos");
+    }
 }

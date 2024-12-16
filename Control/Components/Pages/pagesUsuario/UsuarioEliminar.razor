@@ -1,5 +1,47 @@
-﻿<h3>UsuarioEliminar</h3>
+﻿@page "/usuarios/eliminar/{id:int}"
+@inject IUsuarioRepositorio _usuariosRepositorio
+@inject NavigationManager NavigationManager
+
+<h3>Eliminar Usuario</h3>
+
+@if (usuario != null)
+{
+    <div>
+        <p>¿Estás seguro que deseas eliminar el usuario <b>@usuario.NombreUsuario</b>?</p>
+        <button class="btn btn-danger" @onclick="EliminarUsuario">Eliminar</button>
+        <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+    </div>
+}
+else
+{
+    <p>Cargando datos del usuario...</p>
+}
 
 @code {
+    [Parameter] public int id { get; set; }
+    private Usuario usuario;
 
+    protected override async Task OnInitializedAsync()
+    {
+        usuario = await _usuariosRepositorio.GetOne(id);
+    }
+
+    private async Task EliminarUsuario()
+    {
+        try
+        {
+            await _usuariosRepositorio.Eliminar(usuario);
+            NavigationManager.NavigateTo("/usuarios");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al eliminar el usuario: {ex.Message}");
+            // Aquí podrías mostrar un mensaje de error más descriptivo
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/usuarios");
+    }
 }

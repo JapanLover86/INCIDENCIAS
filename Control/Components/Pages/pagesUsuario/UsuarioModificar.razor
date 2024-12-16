@@ -1,5 +1,74 @@
-﻿<h3>UsuarioModificar</h3>
+﻿@page "/usuarios/modificar/{id:int}"
+@inject IUsuarioRepositorio _usuariosRepositorio
+@inject NavigationManager NavigationManager
+
+<h3>Modificar Usuario</h3>
+
+<EditForm Model="@usuario" OnValidSubmit="@ModificarUsuario">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="nombreUsuario">Nombre del Usuario</label>
+        <InputText id="nombreUsuario" class="form-control" @bind-Value="@usuario.NombreUsuario" />
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="@usuario.Email" />
+    </div>
+
+    <div class="form-group">
+        <label for="contrasena">Contraseña</label>
+        <InputText id="contrasena" class="form-control" @bind-Value="@usuario.Contraseña" type="password" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Modificar</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
 
 @code {
+    [Parameter] public int id { get; set; }
+    private Usuarios usuario = new Usuarios();
 
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var usuarios = await _usuariosRepositorio.GetAll();
+            usuario = usuarios.FirstOrDefault(u => u.IdUsuario == id);
+
+            if (usuario == null)
+            {
+                Console.WriteLine($"No se encontró el usuario con Id {id}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar el usuario: {ex.Message}");
+        }
+    }
+
+    private async Task ModificarUsuario()
+    {
+        try
+        {
+            if (usuario != null)
+            {
+                Console.WriteLine($"Modificando usuario: {usuario.NombreUsuario}, {usuario.Email}");
+                await _usuariosRepositorio.Modificar(usuario);
+                Console.WriteLine("Usuario modificado correctamente.");
+                NavigationManager.NavigateTo("/usuarios");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al modificar el usuario: {ex.Message}");
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/usuarios");  // Redirigir al listado si se cancela
+    }
 }

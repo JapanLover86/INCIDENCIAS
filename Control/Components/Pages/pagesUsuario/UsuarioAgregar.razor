@@ -1,5 +1,53 @@
-﻿<h3>UsuarioAgregar</h3>
+﻿@page "/usuarios/agregar"
+@inject IUsuarioRepositorio _usuariosRepositorio
+@inject NavigationManager NavigationManager
 
-@code {
+<h3>Agregar Nuevo Usuario</h3>
 
+<EditForm Model="usuario" OnValidSubmit="AgregarUsuario">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="nombreUsuario">Nombre del Usuario</label>
+        <InputText id="nombreUsuario" class=" form-control"@bind-Value="usuario.NombreUsuario"/> 
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="usuario.CorreoUsuario"/>
+    </div>
+
+    <div class="form-group">
+        <label for="contraseña">Contraseña</label>
+        <InputText id="contraseña" class="form-control" @bind-Value="usuario.usuarioContraseña" type="password"/>
+    </div>
+
+    <button type=" submit" class="btn btn-primary">Agregar</button>
+    <button type="button" class="btn btn-secondary"onclick="Cancelar">Cancelar</button>
+
+</EditForm>
+
+@code{
+    private Usuarios usuario = new Usuarios();
+
+    private async Task AgregarUsuario()
+    {
+        try
+        {
+            if (usuario != null)
+            {
+                await _usuariosRepositorio.Agregar(usuario);
+                NavigationManager.NavigateTo("/usuarios");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al agregar al usuario: {ex.Message}");
+        }
+    }
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/usuarios");
+    }
 }
