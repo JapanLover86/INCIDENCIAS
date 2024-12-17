@@ -11,7 +11,7 @@
 
     <div class="form-group">
         <label for="descInc">Descripción</label>
-        <InputText id="descInc" class="form-control" @bind-Value="incidencia.DescInc" />
+        <InputText id="descInc" class="form-control" @bind-Value="incidencia.DescInc" maxlength="700" />
     </div>
 
     <div class="form-group">
@@ -21,7 +21,12 @@
 
     <div class="form-group">
         <label for="fechaSolucion">Fecha de Solución</label>
-        <InputDate id="fechaSolucion" class="form-control" @bind-Value="incidencia.FechaSolucion" />
+        <InputDate id="fechaSolucion" class="form-control" @bind-Value="incidencia.FechaSolucion" min="@minFechaSolucion" />
+    </div>
+
+    <div class="form-group">
+        <label for="documento">Subir Documento</label>
+        <InputFile id="documento" class="form-control" OnChange="OnInputFileChange" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx" />
     </div>
 
     <button type="submit" class="btn btn-primary">Agregar</button>
@@ -30,6 +35,12 @@
 
 @code {
     private Incidencias incidencia = new Incidencias();
+    private DateTime minFechaSolucion = DateTime.Now.AddDays(15);
+
+    protected override void OnInitialized()
+    {
+        incidencia.FechaReporte = DateTime.Now;
+    }
 
     private async Task AgregarIncidencia()
     {
@@ -50,5 +61,11 @@
     private void Cancelar()
     {
         NavigationManager.NavigateTo("/incidencias");  // Redirige al listado de incidencias si se cancela la creación
+    }
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        // Aquí puedes agregar la lógica para manejar el archivo subido
     }
 }
