@@ -17,7 +17,7 @@ else
         <div class="card-header bg-black bg-gradient m-lg-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h2 class="text-white py-2">Lista de Productos</h2>
+                    <h2 class="text-white py-2">Lista de recursos</h2>
                 </div>
             </div>
         </div>
@@ -47,9 +47,7 @@ else
                         @foreach (var item in recursos)
                         {
                             <tr>
-                                <td>
-                                    @item.IdRecursos
-                                </td>
+                                <td>@item.IdRecursos</td>
                                 <td>
                                     <a href="@($"producto/modificar/{item.IdRecursos}")" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modificar
@@ -57,12 +55,10 @@ else
 
                                     <a href="@($"producto/eliminar/{item.IdRecursos}")" class="btn btn-danger">
                                         <i class="bi bi-trash"></i> Eliminar
-                                    </a> 
+                                    </a>
                                 </td>
-                                <td>@item.DesRec</td>
-                                <td>@item</td>
-                                <td>@item.NombreRec</td>
-                                
+                                <td>@item.DesRec</td> <!-- Descripción del recurso -->
+                                <td>@item.NombreRec</td> <!-- Nombre del recurso -->
                             </tr>
                         }
                     </tbody>
