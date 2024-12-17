@@ -24,7 +24,14 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        usuario = await _usuariosRepositorio.GetOne(id);
+        var usuarios = await _usuariosRepositorio.GetAll();
+        usuario = usuarios.FirstOrDefault(p => p.IdUsuario == id);
+
+        // Si el recurso no existe, redirigir al listado de incidencias.
+        if (usuario == null)
+        {
+            NavigationManager.NavigateTo("/recursos");
+        }
     }
 
     private async Task EliminarUsuario()

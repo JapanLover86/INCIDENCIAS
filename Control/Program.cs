@@ -20,6 +20,9 @@ builder.Services.AddScoped<IIncidenciasRepositorio, IncidenciasRepositorio>();
 builder.Services.AddScoped<IAsignacionrecursosRepositorio, AsignacionrecursosRepositorio>();
 builder.Services.AddScoped<IEquiposRepositorio, EquiposRepositorio>();
 builder.Services.AddScoped<IRecursosRepositorio, RecursosRepositorio>();
+builder.Services.AddScoped<IUsuarioRepositorio, UsuariosRepositorio>();
+builder.Services.AddScoped<ILaboratoriosRepositorio, LaboratorioRepositorio>();
+builder.Services.AddScoped<IHistorialRepositorio, HistorialRepositorio>();
 
 // Registro de ILaboratoriosRepositorio
 builder.Services.AddScoped<ILaboratoriosRepositorio, LaboratorioRepositorio>();

@@ -41,7 +41,11 @@
     {
         try
         {
-            usuario = await _usuariosRepositorio.GetOne(id);
+            var usuarios = await _usuariosRepositorio.GetAll();
+
+            // Filtra el recurso específico por su Id
+            usuario = usuarios.FirstOrDefault(r => r.IdUsuario == id);
+
 
             if (usuario == null)
             {

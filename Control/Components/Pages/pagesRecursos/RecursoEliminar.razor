@@ -23,7 +23,14 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        recursos = await _recursosRepositorio.GetOne(id);
+        var recurso = await _recursosRepositorio.GetAll();
+        recursos = recurso.FirstOrDefault(p => p.IdRecursos == id);
+
+        // Si el recurso no existe, redirigir al listado de incidencias.
+        if (recursos == null)
+        {
+            NavigationManager.NavigateTo("/recursos");
+        }
     }
 
     private async Task EliminarRecurso()
