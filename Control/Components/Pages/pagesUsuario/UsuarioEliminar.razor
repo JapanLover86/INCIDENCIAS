@@ -1,4 +1,5 @@
 ﻿@page "/usuarios/eliminar/{id:int}"
+@using Control.Data.Entidades
 @inject IUsuarioRepositorio _usuariosRepositorio
 @inject NavigationManager NavigationManager
 
@@ -21,7 +22,7 @@ else
     [Parameter] public int id { get; set; }
     private Usuario usuario;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         usuario = await _usuariosRepositorio.GetOne(id);
     }
