@@ -29,13 +29,13 @@
 </EditForm>
 
 @code {
-    private Recursos recursos = new Data.Entidades.Recursos();
+    private Recursos recursos = new Recursos();
 
     private async Task AgregarRecurso()
     {
         try
         {
-            await _recursosRepositorio.Agregar(Recursos);
+            await _recursosRepositorio.Agregar(recursos);
             NavigationManager.NavigateTo("/recursos");
         }
         catch (Exception ex)
