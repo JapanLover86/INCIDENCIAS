@@ -1,35 +1,40 @@
 ﻿@page "/usuarios/agregar"
+@using Control.Data.Entidades
 @inject IUsuarioRepositorio _usuariosRepositorio
 @inject NavigationManager NavigationManager
 
 <h3>Agregar Nuevo Usuario</h3>
 
-<EditForm Model="usuario" OnValidSubmit="AgregarUsuario">
+<EditForm Model="@usuario" OnValidSubmit="@AgregarUsuario">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="form-group">
         <label for="nombreUsuario">Nombre del Usuario</label>
-        <InputText id="nombreUsuario" class=" form-control"@bind-Value="usuario.NombreUsuario"/> 
+        <InputText id="nombreUsuario" class="form-control" @bind-Value="@usuario.NombreUsuario" />
     </div>
 
     <div class="form-group">
         <label for="email">Email</label>
-        <InputText id="email" class="form-control" @bind-Value="usuario.CorreoUsuario"/>
+        <InputText id="email" class="form-control" @bind-Value="@usuario.CorreoUsuario" />
     </div>
 
     <div class="form-group">
-        <label for="contraseña">Contraseña</label>
-        <InputText id="contraseña" class="form-control" @bind-Value="usuario.usuarioContraseña" type="password"/>
+        <label for="tipoUsuario">Tipo de Usuario</label>
+        <InputText id="tipoUsuario" class="form-control" @bind-Value="@usuario.TipoUsuario" />
     </div>
 
-    <button type=" submit" class="btn btn-primary">Agregar</button>
-    <button type="button" class="btn btn-secondary"onclick="Cancelar">Cancelar</button>
+    <div class="form-group">
+        <label for="rolUsuario">Rol del Usuario</label>
+        <InputText id="rolUsuario" class="form-control" @bind-Value="@usuario.RolUsuario" />
+    </div>
 
+    <button type="submit" class="btn btn-primary">Agregar</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
 </EditForm>
 
-@code{
-    private Usuarios usuario = new Usuarios();
+@code {
+    private Usuario usuario = new Usuario();
 
     private async Task AgregarUsuario()
     {
@@ -44,8 +49,10 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error al agregar al usuario: {ex.Message}");
+            // Aquí podrías mostrar un mensaje de error más descriptivo
         }
     }
+
     private void Cancelar()
     {
         NavigationManager.NavigateTo("/usuarios");
