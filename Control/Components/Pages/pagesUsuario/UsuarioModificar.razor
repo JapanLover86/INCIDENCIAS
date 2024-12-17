@@ -1,4 +1,5 @@
 ﻿@page "/usuarios/modificar/{id:int}"
+@using Control.Data.Entidades
 @inject IUsuarioRepositorio _usuariosRepositorio
 @inject NavigationManager NavigationManager
 
@@ -15,12 +16,17 @@
 
     <div class="form-group">
         <label for="email">Email</label>
-        <InputText id="email" class="form-control" @bind-Value="@usuario.Email" />
+        <InputText id="email" class="form-control" @bind-Value="@usuario.CorreoUsuario" />
     </div>
 
     <div class="form-group">
-        <label for="contrasena">Contraseña</label>
-        <InputText id="contrasena" class="form-control" @bind-Value="@usuario.Contraseña" type="password" />
+        <label for="tipoUsuario">Tipo de Usuario</label>
+        <InputText id="tipoUsuario" class="form-control" @bind-Value="@usuario.TipoUsuario" />
+    </div>
+
+    <div class="form-group">
+        <label for="rolUsuario">Rol del Usuario</label>
+        <InputText id="rolUsuario" class="form-control" @bind-Value="@usuario.RolUsuario" />
     </div>
 
     <button type="submit" class="btn btn-primary">Modificar</button>
@@ -29,14 +35,13 @@
 
 @code {
     [Parameter] public int id { get; set; }
-    private Usuarios usuario = new Usuarios();
+    private Usuario usuario = new Usuario();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         try
         {
-            var usuarios = await _usuariosRepositorio.GetAll();
-            usuario = usuarios.FirstOrDefault(u => u.IdUsuario == id);
+            usuario = await _usuariosRepositorio.GetOne(id);
 
             if (usuario == null)
             {
@@ -55,7 +60,7 @@
         {
             if (usuario != null)
             {
-                Console.WriteLine($"Modificando usuario: {usuario.NombreUsuario}, {usuario.Email}");
+                Console.WriteLine($"Modificando usuario: {usuario.NombreUsuario}, {usuario.CorreoUsuario}");
                 await _usuariosRepositorio.Modificar(usuario);
                 Console.WriteLine("Usuario modificado correctamente.");
                 NavigationManager.NavigateTo("/usuarios");
@@ -69,6 +74,6 @@
 
     private void Cancelar()
     {
-        NavigationManager.NavigateTo("/usuarios");  // Redirigir al listado si se cancela
+        NavigationManager.NavigateTo("/usuarios");
     }
 }
