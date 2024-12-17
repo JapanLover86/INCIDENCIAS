@@ -1,5 +1,5 @@
 ﻿@page "/recursos/agregar"
-@using Control.Migrations
+@using Control.Data.Entidades
 @inject IRecursosRepositorio _recursosRepositorio
 @inject NavigationManager NavigationManager
 
@@ -10,18 +10,13 @@
     <ValidationSummary />
 
     <div class="mb-3">
-        Nombre del Recurso
+        <label for="nombreRecurso" class="form-label">Nombre del Recurso</label>
         <InputText id="nombreRecurso" class="form-control" @bind-Value="@recursos.NombreRec" />
     </div>
 
     <div class="mb-3">
-        <label for="tipoRecurso" class="form-label">Tipo de Recurso</label>
-        <InputText id="tipoRecurso" class="form-control" @bind-Value="@recursos.TipoRec" />
-    </div>
-
-    <div class="mb-3">
-        <label for="cantidad" class="form-label">Cantidad</label>
-        <InputNumber id="cantidad" class="form-control" @bind-Value="@recursos.CantRec" />
+        <label for="descripcionRecurso" class="form-label">Descripción del Recurso</label>
+        <InputText id="descripcionRecurso" class="form-control" @bind-Value="@recursos.DesRec" />
     </div>
 
     <button type="submit" class="btn btn-success">Agregar</button>
