@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Extensiones\" />
-    <Folder Include="Servicios\Notificaciones\" />
     <Folder Include="VistaModelo\" />
     <Folder Include="wwwroot\Js\" />
     <Folder Include="wwwroot\Images\" />

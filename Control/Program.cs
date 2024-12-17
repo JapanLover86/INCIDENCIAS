@@ -1,3 +1,4 @@
+using AcmeSacBlazorDemoWeb.Servicios.Notificaciones;
 using Control.Components;
 using Control.Components.Account;
 using Control.Data;
@@ -26,6 +27,9 @@ builder.Services.AddScoped<IHistorialRepositorio, HistorialRepositorio>();
 
 // Registro de ILaboratoriosRepositorio
 builder.Services.AddScoped<ILaboratoriosRepositorio, LaboratorioRepositorio>();
+
+// Registro del servicio de notificaciones
+builder.Services.AddScoped<Notificacion>();
 
 builder.Services.AddAuthentication(options =>
 {
