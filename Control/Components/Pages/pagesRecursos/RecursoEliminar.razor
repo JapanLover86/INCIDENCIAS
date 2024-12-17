@@ -2,21 +2,19 @@
 @inject IRecursosRepositorio _recursosRepositorio
 @inject NavigationManager NavigationManager
 
-<h3>RecursoEliminar</h3>
+<h3>Eliminar Recurso</h3>
 
-@if ( recursos != null)
+@if (recursos != null)
 {
     <div>
-        <p>¿Estas seguro que deseas eliminar el recurso? 
-            <b>@recursos.NombreRec</b>?
-        </p>
+        <p>¿Estás seguro que deseas eliminar el recurso <b>@recursos.NombreRec</b>?</p>
         <button class="btn btn-danger" @onclick="EliminarRecurso">Eliminar</button>
         <button class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
     </div>
 }
 else
 {
-    <p>Cargando datos del recurso....</p>
+    <p>Cargando datos del recurso...</p>
 }
 
 @code {
@@ -33,12 +31,12 @@ else
         try
         {
             await _recursosRepositorio.Eliminar(recursos);
+            NavigationManager.NavigateTo("/recursos");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al eliminar el recurso:{ex.Message}");
+            Console.WriteLine($"Error al eliminar el recurso: {ex.Message}");
         }
-
     }
 
     private void Cancelar()
