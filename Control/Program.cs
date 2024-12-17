@@ -19,6 +19,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuth
 builder.Services.AddScoped<IIncidenciasRepositorio, IncidenciasRepositorio>();
 builder.Services.AddScoped<IAsignacionrecursosRepositorio, AsignacionrecursosRepositorio>();
 builder.Services.AddScoped<IEquiposRepositorio, EquiposRepositorio>();
+builder.Services.AddScoped<IRecursosRepositorio, RecursosRepositorio>();
 
 // Registro de ILaboratoriosRepositorio
 builder.Services.AddScoped<ILaboratoriosRepositorio, LaboratorioRepositorio>();
