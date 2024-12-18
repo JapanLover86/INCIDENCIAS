@@ -21,6 +21,7 @@ public class AplicacionDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
 
+
         modelBuilder.Entity<Usuario>().HasData(
             
             new Usuario { IdUsuario = 312122, NombreUsuario  = "Jorgito", CorreoUsuario = "Jorgito@upla.edu.pe", RolUsuario = "Docente", TipoUsuario = "Principal"  }
@@ -52,13 +53,14 @@ public class AplicacionDbContext : DbContext
             );
 
 
+        
+
         modelBuilder.Entity<Incidencias>().HasData(
-            
-            new Incidencias { IdIncidencias = 1251222, DescInc = "Sucedió mientras alguien movía..", FechaReporte = new DateTime(2024, 12, 05), FechaSolucion = new DateTime (2024, 12, 15)}
-            
-            
-            
-            );
+                    
+            new Incidencias { IdIncidencias = 78434, DescInc = "Este reporte fue dado por un error en el sistema", FechaReporte = new DateTime(2024, 12, 12), FechaSolucion = new DateTime(2024, 12, 27), Razones = RazonIncidencia.Mantenimiento, Roles= Rol.JorgeVega }
+
+
+           );
 
         modelBuilder.Entity<Laboratorios>().HasData(
             

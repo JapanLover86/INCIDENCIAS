@@ -126,14 +126,20 @@ namespace Control.Migrations
 
                     b.Property<string>("DescInc")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<DateTime>("FechaReporte")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaSolucion")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Razon")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rol")
+                        .HasColumnType("int");
 
                     b.HasKey("IdIncidencias");
 
@@ -142,10 +148,12 @@ namespace Control.Migrations
                     b.HasData(
                         new
                         {
-                            IdIncidencias = 1251222,
-                            DescInc = "Sucedió mientras alguien movía..",
-                            FechaReporte = new DateTime(2024, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaSolucion = new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            IdIncidencias = 78434,
+                            DescInc = "Este reporte fue dado por un error en el sistema",
+                            FechaReporte = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaSolucion = new DateTime(2024, 12, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Razon = 1,
+                            Rol = 0
                         });
                 });
 

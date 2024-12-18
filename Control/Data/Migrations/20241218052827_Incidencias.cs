@@ -10,7 +10,17 @@ namespace Control.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+            name: "Rol",
+            table: "incidencias",
+            nullable: false,
+            defaultValue: 0);
 
+            migrationBuilder.AddColumn<int>(
+                name: "Razon",
+                table: "incidencias",
+                nullable: false,
+                defaultValue: 0);
         }
 
         /// <inheritdoc />

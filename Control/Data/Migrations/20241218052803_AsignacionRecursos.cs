@@ -5,7 +5,7 @@
 namespace Control.Migrations
 {
     /// <inheritdoc />
-    public partial class Historial : Migration
+    public partial class AsignacionRecursos : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

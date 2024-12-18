@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Control.Migrations
 {
     [DbContext(typeof(AplicacionDbContext))]
-    [Migration("20241212020330_Historial")]
-    partial class Historial
+    [Migration("20241218052813_Equipos")]
+    partial class Equipos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,8 +32,8 @@ namespace Control.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdAsignacion"));
 
-                    b.Property<int>("CantidadUtilizada")
-                        .HasColumnType("int");
+                    b.Property<double>("CantidadUtilizada")
+                        .HasColumnType("float");
 
                     b.HasKey("IdAsignacion");
 
@@ -43,7 +43,7 @@ namespace Control.Migrations
                         new
                         {
                             IdAsignacion = 123512,
-                            CantidadUtilizada = 34522
+                            CantidadUtilizada = 350.44999999999999
                         });
                 });
 
@@ -129,14 +129,20 @@ namespace Control.Migrations
 
                     b.Property<string>("DescInc")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<DateTime>("FechaReporte")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaSolucion")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Razon")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rol")
+                        .HasColumnType("int");
 
                     b.HasKey("IdIncidencias");
 
@@ -145,10 +151,12 @@ namespace Control.Migrations
                     b.HasData(
                         new
                         {
-                            IdIncidencias = 1251222,
-                            DescInc = "Sucedio mientras alguien movia..",
-                            FechaReporte = new DateTime(2024, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FechaSolucion = new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            IdIncidencias = 78434,
+                            DescInc = "Este reporte fue dado por un error en el sistema",
+                            FechaReporte = new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FechaSolucion = new DateTime(2024, 12, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Razon = 1,
+                            Rol = 0
                         });
                 });
 

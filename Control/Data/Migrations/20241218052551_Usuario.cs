@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Control.Migrations
 {
     /// <inheritdoc />
-    public partial class AsignacionRecursos : Migration
+    public partial class Usuario : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,7 +38,7 @@ namespace Control.Migrations
                 {
                     IdAsignacion = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CantidadUtilizada = table.Column<int>(type: "int", nullable: false)
+                    CantidadUtilizada = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,9 +81,11 @@ namespace Control.Migrations
                 {
                     IdIncidencias = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DescInc = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    DescInc = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     FechaReporte = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaSolucion = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    FechaSolucion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Rol = table.Column<int>(type: "int", nullable: false),
+                    Razon = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -138,7 +140,7 @@ namespace Control.Migrations
             migrationBuilder.InsertData(
                 table: "asignacionRecursos",
                 columns: new[] { "IdAsignacion", "CantidadUtilizada" },
-                values: new object[] { 123512, 34522 });
+                values: new object[] { 123512, 350.44999999999999 });
 
             migrationBuilder.InsertData(
                 table: "equipos",
@@ -152,8 +154,8 @@ namespace Control.Migrations
 
             migrationBuilder.InsertData(
                 table: "incidencias",
-                columns: new[] { "IdIncidencias", "DescInc", "FechaReporte", "FechaSolucion" },
-                values: new object[] { 1251222, "Sucedio mientras alguien movia..", new DateTime(2024, 12, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 12, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) });
+                columns: new[] { "IdIncidencias", "DescInc", "FechaReporte", "FechaSolucion", "Razon", "Rol" },
+                values: new object[] { 78434, "Este reporte fue dado por un error en el sistema", new DateTime(2024, 12, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2024, 12, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 0 });
 
             migrationBuilder.InsertData(
                 table: "laboratorios",
