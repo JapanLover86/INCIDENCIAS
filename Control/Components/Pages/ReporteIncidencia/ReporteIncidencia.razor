@@ -1,0 +1,41 @@
+﻿
+@page "/incidencias/reporteincidencia"
+@inject IIncidenciasRepositorio _reporteIncidenciaRepositorio
+@inject NavigationManager NavigationManager
+
+<h3>Reporte de Incidencia</h3>
+
+<EditForm Model="@reporteIncidencia" OnValidSubmit="@EnviarReporte">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="descripcion">Descripción de la Incidencia</label>
+        <InputTextArea id="descripcion" class="form-control" @bind-Value="@reporteIncidencia.reporteIncidencia" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar Reporte</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    private ReporteIncidencia reporteIncidencia = new ReporteIncidencia();
+
+    private async Task EnviarReporte()
+    {
+        try
+        {
+            await _reporteIncidenciaRepositorio.Agregar(reporteIncidencia);
+            NavigationManager.NavigateTo("/usuarios");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al enviar el reporte: {ex.Message}");
+        }
+    }
+
+    private void Cancelar()
+    {
+        NavigationManager.NavigateTo("/usuarios");
+    }
+}
