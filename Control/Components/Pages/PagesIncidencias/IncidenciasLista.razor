@@ -78,6 +78,8 @@ else
 @code {
     private bool Cargando { get; set; } = false;
 
+    
+
     private IEnumerable<Incidencias> incidencias { get; set; } = new List<Incidencias>();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -93,6 +95,14 @@ else
 
     public async Task CargarIncidencias()
     {
-        incidencias = await _incidenciasRepositorio.GetAll();
+        try
+        {
+            incidencias = await _incidenciasRepositorio.GetAll();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar incidencias: {ex.Message}");
+            Notificacion.MostrarError("Ocurrió un error al cargar las incidencias. Intente nuevamente.");
+        }
     }
 }

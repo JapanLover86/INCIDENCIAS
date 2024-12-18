@@ -1,17 +1,42 @@
-﻿
-@page "/incidencias/reporteincidencia"
-@inject IIncidenciasRepositorio _reporteIncidenciaRepositorio
+﻿@page "/incidencias/reporte"
+@using Control.Data.Entidades
+@inject IIncidenciasRepositorio _incidenciasRepositorio
 @inject NavigationManager NavigationManager
 
 <h3>Reporte de Incidencia</h3>
 
-<EditForm Model="@reporteIncidencia" OnValidSubmit="@EnviarReporte">
+<EditForm Model="@incidencia" OnValidSubmit="@EnviarReporte">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="form-group">
         <label for="descripcion">Descripción de la Incidencia</label>
-        <InputTextArea id="descripcion" class="form-control" @bind-Value="@reporteIncidencia.reporteIncidencia" />
+        <InputTextArea id="descripcion" class="form-control" @bind-Value="@incidencia.DescInc" />
+    </div>
+
+    <div class="form-group">
+        <label for="fechaReporte">Fecha de Reporte</label>
+        <InputDate id="fechaReporte" class="form-control" @bind-Value="@incidencia.FechaReporte" />
+    </div>
+
+    <div class="form-group">
+        <label for="rol">Rol</label>
+        <InputSelect id="rol" class="form-control" @bind-Value="@incidencia.Roles">
+            @foreach (var rol in Enum.GetValues(typeof(Rol)))
+            {
+                <option value="@rol">@rol</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label for="razon">Razón de la Incidencia</label>
+        <InputSelect id="razon" class="form-control" @bind-Value="@incidencia.Razones">
+            @foreach (var razon in Enum.GetValues(typeof(RazonIncidencia)))
+            {
+                <option value="@razon">@razon</option>
+            }
+        </InputSelect>
     </div>
 
     <button type="submit" class="btn btn-primary">Enviar Reporte</button>
@@ -19,23 +44,24 @@
 </EditForm>
 
 @code {
-    private ReporteIncidencia reporteIncidencia = new ReporteIncidencia();
+    private Incidencias incidencia = new Incidencias();
 
     private async Task EnviarReporte()
     {
         try
         {
-            await _reporteIncidenciaRepositorio.Agregar(reporteIncidencia);
-            NavigationManager.NavigateTo("/usuarios");
+            await _incidenciasRepositorio.Agregar(incidencia);
+            NavigationManager.NavigateTo("/incidencias");
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error al enviar el reporte: {ex.Message}");
+            // Aquí podrías mostrar un mensaje de error más descriptivo
         }
     }
 
     private void Cancelar()
     {
-        NavigationManager.NavigateTo("/usuarios");
+        NavigationManager.NavigateTo("/incidencias");
     }
 }
