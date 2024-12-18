@@ -1,71 +1,84 @@
 ﻿@page "/incidencias/agregar"
 @inject IIncidenciasRepositorio _incidenciasRepositorio
-@inject NavigationManager NavigationManager
-@inject Notificacion Notificacion
+@inject NavigationManager Navigation
 
 <h3>Agregar Nueva Incidencia</h3>
 
-<EditForm Model="incidencia" OnValidSubmit="AgregarIncidencia">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label for="descInc">Descripción</label>
-        <InputText id="descInc" class="form-control" @bind-Value="incidencia.DescInc" maxlength="700" />
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-black bg-gradient m-lg-0 py-3 text-white text-center">
+        <h4>Formulario de Incidencia</h4>
     </div>
 
-    <div class="form-group">
-        <label for="fechaReporte">Fecha de Reporte</label>
-        <InputDate id="fechaReporte" class="form-control" @bind-Value="incidencia.FechaReporte" />
-    </div>
+    <div class="card-body">
+        <EditForm Model="nuevaIncidencia" OnValidSubmit="AgregarIncidencia">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
-    <div class="form-group">
-        <label for="fechaSolucion">Fecha de Solución</label>
-        <InputDate id="fechaSolucion" class="form-control" @bind-Value="incidencia.FechaSolucion" min="@minFechaSolucion" />
-    </div>
+            <div class="mb-3">
+                <label class="form-label">Descripción</label>
+                <InputTextArea @bind-Value="nuevaIncidencia.DescInc" class="form-control" placeholder="Describa la incidencia aquí..." />
+            </div>
 
-    <div class="form-group">
-        <label for="documento">Subir Documento</label>
-        <InputFile id="documento" class="form-control" OnChange="OnInputFileChange" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx" />
-    </div>
+            <div class="mb-3">
+                <label class="form-label">Fecha de Reporte</label>
+                <InputDate @bind-Value="nuevaIncidencia.FechaReporte" class="form-control" />
+            </div>
 
-    <button type="submit" class="btn btn-primary">Agregar</button>
-    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
-</EditForm>
+            <div class="mb-3">
+                <label class="form-label">Fecha de Solución</label>
+                <InputDate @bind-Value="nuevaIncidencia.FechaSolucion" class="form-control" />
+            </div>
+
+            <!-- Dropdown para Roles -->
+            <div class="mb-3">
+                <label class="form-label">Rol</label>
+                <select class="form-select" @bind="nuevaIncidencia.Roles">
+                    @foreach (var rol in Enum.GetValues(typeof(Rol)))
+                    {
+                        <option value="@rol">@rol</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Dropdown para Razón de Incidencia -->
+            <div class="mb-3">
+                <label class="form-label">Razón de Incidencia</label>
+                <select class="form-select" @bind="nuevaIncidencia.Razones">
+                    @foreach (var razon in Enum.GetValues(typeof(RazonIncidencia)))
+                    {
+                        <option value="@razon">@razon</option>
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success"><i class="bi bi-check-circle"></i> Guardar</button>
+            <button type="button" class="btn btn-secondary ms-2" @onclick="Cancelar"><i class="bi bi-arrow-left"></i> Cancelar</button>
+        </EditForm>
+    </div>
+</div>
 
 @code {
-    private Incidencias incidencia = new Incidencias();
-    private DateTime minFechaSolucion = DateTime.Now.AddDays(15);
-
-    protected override void OnInitialized()
-    {
-        incidencia.FechaReporte = DateTime.Now;
-    }
+    private Incidencias nuevaIncidencia = new Incidencias
+        {
+            FechaReporte = DateTime.Now,
+            FechaSolucion = DateTime.Now.AddDays(15)
+        };
 
     private async Task AgregarIncidencia()
     {
         try
         {
-            if (incidencia != null)
-            {
-                await _incidenciasRepositorio.Agregar(incidencia);
-                NavigationManager.NavigateTo("/incidencias");  // Redirige al listado de incidencias
-            }
+            await _incidenciasRepositorio.Agregar(nuevaIncidencia);
+            Navigation.NavigateTo("/incidencias");
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al agregar la incidencia: {ex.Message}");
+            Console.WriteLine($"Error al guardar la incidencia: {ex.Message}");
         }
     }
 
     private void Cancelar()
     {
-        NavigationManager.NavigateTo("/incidencias");  // Redirige al listado de incidencias si se cancela la creación
-    }
-
-    private async Task OnInputFileChange(InputFileChangeEventArgs e)
-    {
-        var file = e.File;
-        // Aquí puedes agregar la lógica para manejar el archivo subido
+        Navigation.NavigateTo("/incidencias");
     }
 }

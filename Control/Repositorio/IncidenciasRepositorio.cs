@@ -14,6 +14,9 @@ namespace Control.Repositorio
 
         public async Task<Incidencias> Agregar(Incidencias incidencias)
         {
+            if (incidencias == null)
+                throw new ArgumentNullException(nameof(incidencias));
+
             await contextodb.incidencias.AddAsync(incidencias);
             await contextodb.SaveChangesAsync();
             return incidencias;
@@ -22,26 +25,18 @@ namespace Control.Repositorio
         public async Task<Incidencias> Eliminar(Incidencias incidencias)
         {
             if (incidencias == null)
-            {
-                throw new ArgumentNullException(nameof(incidencias), "Las incidencias no deben ser nulos");
-            }
-            try
-            {
-                contextodb.incidencias.Remove(incidencias);
-                await contextodb.SaveChangesAsync();
-                return incidencias;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error al eliminar el incidente {incidencias.IdIncidencias}", ex);
-            }
+                throw new ArgumentNullException(nameof(incidencias));
+
+            contextodb.incidencias.Remove(incidencias);
+            await contextodb.SaveChangesAsync();
+            return incidencias;
         }
 
         public async Task<IEnumerable<Incidencias>> GetAll()
         {
             return await contextodb.incidencias.ToListAsync();
 
-            
+
         }
 
         public async Task<IEnumerable<Incidencias>> GetOne(int id)
@@ -56,20 +51,21 @@ namespace Control.Repositorio
 
         }
 
-        public async Task<Incidencias> Modificar (Incidencias incidencias)
+        public async Task<Incidencias> Modificar(Incidencias incidencias)
         {
-            var modifcarIncidencias = await contextodb.incidencias.FirstOrDefaultAsync(i => i.IdIncidencias == incidencias.IdIncidencias);
-            if (modifcarIncidencias != null)
+            var incidenciaExistente = await contextodb.incidencias.FirstOrDefaultAsync(i => i.IdIncidencias == incidencias.IdIncidencias);
+            if (incidenciaExistente is not null)
             {
-                modifcarIncidencias.DescInc = incidencias.DescInc;
-                modifcarIncidencias.FechaReporte = incidencias.FechaReporte;
-                modifcarIncidencias.FechaSolucion = incidencias.FechaSolucion;
-                modifcarIncidencias.Roles = incidencias.Roles;
-                modifcarIncidencias.Razones = incidencias.Razones;
+                incidenciaExistente.DescInc = incidencias.DescInc;
+                incidenciaExistente.FechaReporte = incidencias.FechaReporte;
+                incidenciaExistente.FechaSolucion = incidencias.FechaSolucion;
+                incidenciaExistente.Roles = incidencias.Roles;
+                incidenciaExistente.Razones = incidencias.Razones;
+
                 await contextodb.SaveChangesAsync();
-                return modifcarIncidencias;
+                return incidenciaExistente;
             }
-            return null;
+            return incidencias;
         }
     }
 }

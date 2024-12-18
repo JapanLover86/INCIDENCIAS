@@ -51,8 +51,8 @@ else
                                 <td>@item.DescInc</td>
                                 <td>@item.FechaReporte.ToString("dd/MM/yyyy")</td>
                                 <td>@item.FechaSolucion.ToString("dd/MM/yyyy")</td>
-                                <td>@item.Roles</td>
-                                <td>@item.Razones</td>
+                                <td>@item.Roles.ToString()</td> <!-- Muestra el nombre del Enum Rol -->
+                                <td>@item.Razones.ToString()</td> <!-- Muestra el nombre del Enum RazonIncidencia -->
                                 <td>
                                     <a href="@($"incidencias/modificar/{item.IdIncidencias}")" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modificar
