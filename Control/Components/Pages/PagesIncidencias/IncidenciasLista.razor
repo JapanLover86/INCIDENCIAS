@@ -37,6 +37,8 @@ else
                             <th>Descripción</th>
                             <th>Fecha de Reporte</th>
                             <th>Fecha de Solución</th>
+                            <th>Rol</th>
+                            <th>Razón</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -49,6 +51,8 @@ else
                                 <td>@item.DescInc</td>
                                 <td>@item.FechaReporte.ToString("dd/MM/yyyy")</td>
                                 <td>@item.FechaSolucion.ToString("dd/MM/yyyy")</td>
+                                <td>@item.Roles</td>
+                                <td>@item.Razones</td>
                                 <td>
                                     <a href="@($"incidencias/modificar/{item.IdIncidencias}")" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modificar

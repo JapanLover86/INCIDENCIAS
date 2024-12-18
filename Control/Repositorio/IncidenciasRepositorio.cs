@@ -64,6 +64,8 @@ namespace Control.Repositorio
                 modifcarIncidencias.DescInc = incidencias.DescInc;
                 modifcarIncidencias.FechaReporte = incidencias.FechaReporte;
                 modifcarIncidencias.FechaSolucion = incidencias.FechaSolucion;
+                modifcarIncidencias.Roles = incidencias.Roles;
+                modifcarIncidencias.Razones = incidencias.Razones;
                 await contextodb.SaveChangesAsync();
                 return modifcarIncidencias;
             }
