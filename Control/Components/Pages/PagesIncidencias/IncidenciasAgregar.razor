@@ -68,17 +68,33 @@
     {
         try
         {
+            // Validación adicional (opcional)
+            if (string.IsNullOrWhiteSpace(nuevaIncidencia.DescInc))
+            {
+                Console.WriteLine("La descripción no puede estar vacía.");
+                return;
+            }
+
             await _incidenciasRepositorio.Agregar(nuevaIncidencia);
             Navigation.NavigateTo("/incidencias");
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error al guardar la incidencia: {ex.Message}");
+            // Aquí puedes implementar un componente de notificación de error, como se mostró antes
         }
     }
 
     private void Cancelar()
     {
-        Navigation.NavigateTo("/incidencias");
+        if (ConfirmarCancelacion())
+        {
+            Navigation.NavigateTo("/incidencias");
+        }
+    }
+
+    private bool ConfirmarCancelacion()
+    {
+        return true; // Implementa un cuadro de diálogo de confirmación si es necesario
     }
 }

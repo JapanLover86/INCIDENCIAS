@@ -11,7 +11,7 @@ namespace Control.Repositorio
 
         public Task< Incidencias> Eliminar  (Incidencias incidencias);
 
-        public Task< IEnumerable<Incidencias>> GetOne(int id);
+        public Task<Incidencias> GetOne(int id);
 
         public Task< IEnumerable<Incidencias>> GetAll();
 

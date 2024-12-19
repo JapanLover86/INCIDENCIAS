@@ -34,20 +34,21 @@ namespace Control.Repositorio
 
         public async Task<IEnumerable<Incidencias>> GetAll()
         {
-            return await contextodb.incidencias.ToListAsync();
-
-
+            try
+            {
+                return await contextodb.incidencias.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en GetAll: {ex.Message}");
+                throw;
+            }
+                
         }
 
-        public async Task<IEnumerable<Incidencias>> GetOne(int id)
+        public async Task<Incidencias> GetOne(int id)
         {
-            var buscarIncidente = await contextodb.incidencias.FirstOrDefaultAsync();
-            if (buscarIncidente == null)
-            {
-                new Incidencias();
-
-            }
-            return (IEnumerable<Incidencias>)buscarIncidente;
+            return await contextodb.incidencias.FindAsync(id);
 
         }
 

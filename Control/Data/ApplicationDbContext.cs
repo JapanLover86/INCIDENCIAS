@@ -19,7 +19,7 @@ public class AplicacionDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
+        
 
 
         modelBuilder.Entity<Usuario>().HasData(

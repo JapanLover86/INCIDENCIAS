@@ -24,6 +24,8 @@ builder.Services.AddScoped<IRecursosRepositorio, RecursosRepositorio>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuariosRepositorio>();
 builder.Services.AddScoped<ILaboratoriosRepositorio, LaboratorioRepositorio>();
 builder.Services.AddScoped<IHistorialRepositorio, HistorialRepositorio>();
+builder.Services.AddScoped<Notificacion>();
+
 
 // Registro de ILaboratoriosRepositorio
 builder.Services.AddScoped<ILaboratoriosRepositorio, LaboratorioRepositorio>();

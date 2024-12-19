@@ -20,6 +20,11 @@ else
         </div>
 
         <div class="card-body py-4">
+            @if (!string.IsNullOrEmpty(MensajeError))
+            {
+                <div class="alert alert-danger text-center">@MensajeError</div>
+            }
+
             <div class="row pb-3">
                 <div class="col text-end">
                     <a href="incidencias/agregar" class="btn btn-secondary" style="width:250px;">
@@ -28,7 +33,7 @@ else
                 </div>
             </div>
 
-            @if (incidencias.Any())
+            @if (incidencias != null && incidencias.Any())
             {
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -42,7 +47,6 @@ else
                             <th>Acciones</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         @foreach (var item in incidencias)
                         {
@@ -51,16 +55,15 @@ else
                                 <td>@item.DescInc</td>
                                 <td>@item.FechaReporte.ToString("dd/MM/yyyy")</td>
                                 <td>@item.FechaSolucion.ToString("dd/MM/yyyy")</td>
-                                <td>@item.Roles.ToString()</td> <!-- Muestra el nombre del Enum Rol -->
-                                <td>@item.Razones.ToString()</td> <!-- Muestra el nombre del Enum RazonIncidencia -->
+                                <td>@item.Roles.ToString()</td>
+                                <td>@item.Razones.ToString()</td>
                                 <td>
                                     <a href="@($"incidencias/modificar/{item.IdIncidencias}")" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modificar
                                     </a>
-
-                                    <a href="@($"incidencias/eliminar/{item.IdIncidencias}")" class="btn btn-danger">
+                                    <button class="btn btn-danger" @onclick="() => EliminarIncidenciaPorId(item.IdIncidencias)">
                                         <i class="bi bi-trash"></i> Eliminar
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                         }
@@ -78,31 +81,84 @@ else
 @code {
     private bool Cargando { get; set; } = false;
 
-    
+    private List<Incidencias> incidencias { get; set; } = new();
 
-    private IEnumerable<Incidencias> incidencias { get; set; } = new List<Incidencias>();
+    private string MensajeError { get; set; }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender)
-        {
-            Cargando = true;
-            await CargarIncidencias();
-            Cargando = false;
-            StateHasChanged();
-        }
+        Cargando = true;
+        await CargarIncidencias();
+        Cargando = false;
     }
 
-    public async Task CargarIncidencias()
+    private async Task CargarIncidencias()
     {
         try
         {
-            incidencias = await _incidenciasRepositorio.GetAll();
+            incidencias = (await _incidenciasRepositorio.GetAll()).ToList();
+            MensajeError = string.Empty;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error al cargar incidencias: {ex.Message}");
-            Notificacion.MostrarError("Ocurrió un error al cargar las incidencias. Intente nuevamente.");
+            MensajeError = "Ocurrió un error al cargar las incidencias. Intente nuevamente.";
         }
     }
+
+    private async Task EliminarIncidencia(Incidencias incidencia)
+    {
+        bool confirmado = await Notificacion.Confirmar("¿Está seguro de que desea eliminar esta incidencia?");
+        if (confirmado)
+        {
+            try
+            {
+                // Intentar eliminar la incidencia usando el método del repositorio
+                var resultado = await _incidenciasRepositorio.Eliminar(incidencia);
+
+                if (resultado != null)
+                {
+                    // Si fue exitoso, eliminarla también de la lista local
+                    incidencias = incidencias.Where(i => i.IdIncidencias != incidencia.IdIncidencias).ToList();
+                    await Notificacion.Exito("Incidencia eliminada correctamente.");
+                }
+                else
+                {
+                    await Notificacion.Error("No se pudo eliminar la incidencia.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al eliminar incidencia: {ex.Message}");
+                await Notificacion.Error("Ocurrió un error al eliminar la incidencia.");
+            }
+        }
+    }
+
+
+    private async Task EliminarIncidenciaPorId(int id)
+    {
+        try
+        {
+            // Buscar la incidencia por su ID
+            var incidencia = await _incidenciasRepositorio.GetOne(id);
+            if (incidencia != null)
+            {
+                // Llamar al método para eliminar la incidencia encontrada
+                await EliminarIncidencia(incidencia);
+            }
+            else
+            {
+                // Mostrar error si no se encontró la incidencia
+                await Notificacion.Error("No se encontró la incidencia para eliminar.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al buscar o eliminar la incidencia: {ex.Message}");
+            await Notificacion.Error("Ocurrió un error al procesar la eliminación.");
+        }
+    }
+
+
 }
