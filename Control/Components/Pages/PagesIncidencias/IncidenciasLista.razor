@@ -1,6 +1,8 @@
 ﻿@page "/incidencias"
 @inject IIncidenciasRepositorio _incidenciasRepositorio
 @inject Notificacion Notificacion
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
 
 @if (Cargando)
 {
@@ -26,9 +28,17 @@ else
             }
 
             <div class="row pb-3">
-                <div class="col text-end">
-                    <a href="incidencias/agregar" class="btn btn-secondary" style="width:250px;">
-                        <i class="bi bi-plus-circle"></i> Agregar nueva incidencia
+                <div class="col-8">
+                    <input type="text" class="form-control" placeholder="Buscar por ID" @bind="BuscarId" @oninput="FiltrarIncidencias" />
+                </div>
+                <div class="col-4 text-end">
+                    <button class="btn btn-secondary me-2" @onclick="GenerarReporte" style="width: 250px;">
+                        <i class="bi bi-file-earmark-text"></i> Generar Reporte
+                    </button>
+
+                    <!-- Botón de Agregar Nuevo Incidente -->
+                    <a href="/incidencias/agregar" class="btn btn-success" style="width: 250px;">
+                        <i class="bi bi-plus-circle"></i> Agregar Nuevo Incidente
                     </a>
                 </div>
             </div>
@@ -90,10 +100,11 @@ else
 
     private List<Incidencias> incidencias { get; set; } = new();
     private List<Incidencias> pagedIncidencias { get; set; } = new();
+    private string BuscarId { get; set; } = string.Empty;
 
     private int currentPage { get; set; } = 1;
-    private int pageSize { get; set; } = 5;  // Número de elementos por página
-    private int totalPages { get; set; } = 1;  // Total de páginas
+    private int pageSize { get; set; } = 5;
+    private int totalPages { get; set; } = 1;
     private string MensajeError { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -103,13 +114,18 @@ else
         Cargando = false;
     }
 
+    private async Task GenerarReporte()
+    {
+        await JSRuntime.InvokeVoidAsync("generarReporte");
+    }
+
     private async Task CargarIncidencias()
     {
         try
         {
             incidencias = (await _incidenciasRepositorio.GetAllAsync()).ToList();
-            totalPages = (int)Math.Ceiling((double)incidencias.Count / pageSize);  // Calcular el total de páginas
-            LoadPagedData();  // Cargar las incidencias de la página actual
+            totalPages = (int)Math.Ceiling((double)incidencias.Count / pageSize);
+            LoadPagedData();
             MensajeError = string.Empty;
         }
         catch (Exception ex)
@@ -121,7 +137,18 @@ else
 
     private void LoadPagedData()
     {
-        pagedIncidencias = incidencias.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+        var incidenciasFiltradas = string.IsNullOrEmpty(BuscarId) ?
+            incidencias :
+            incidencias.Where(i => i.IdIncidencias.ToString().Contains(BuscarId)).ToList();
+
+        pagedIncidencias = incidenciasFiltradas.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+        totalPages = (int)Math.Ceiling((double)incidenciasFiltradas.Count / pageSize);
+    }
+
+    private void FiltrarIncidencias()
+    {
+        currentPage = 1;
+        LoadPagedData();
     }
 
     private void PreviousPage()
@@ -163,7 +190,7 @@ else
             if (resultado)
             {
                 incidencias = incidencias.Where(i => i.IdIncidencias != id).ToList();
-                LoadPagedData();  // Recargar la página actual después de eliminar
+                LoadPagedData();
                 await Notificacion.Exito("Incidencia eliminada correctamente.");
             }
             else

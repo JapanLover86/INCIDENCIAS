@@ -1,0 +1,72 @@
+﻿@page "/reporte-incidencias"
+@inject IIncidenciasRepositorio _incidenciasRepositorio
+@inject IJSRuntime JSRuntime
+
+<h3>Reporte de Incidencias</h3>
+
+<button class="btn btn-primary" @onclick="ImprimirReporte">Imprimir Reporte</button>
+
+@if (incidencias != null && incidencias.Any())
+{
+    <div id="reporte">
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>ID Incidencia</th>
+                    <th>Descripción</th>
+                    <th>Fecha de Reporte</th>
+                    <th>Fecha de Solución</th>
+                    <th>Rol</th>
+                    <th>Razón</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in incidencias)
+                {
+                    <tr>
+                        <td>@item.IdIncidencias</td>
+                        <td>@item.DescInc</td>
+                        <td>@item.FechaReporte.ToString("dd/MM/yyyy") ?? "N/A"</td>
+                        <td>@item.FechaSolucion.ToString("dd/MM/yyyy") ?? "N/A"</td>
+                        <td>@(item.Rol?.ToString() ?? "Sin rol")</td>
+                        <td>@(item.Razon?.ToString() ?? "Sin razón")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No hay incidencias para mostrar en el reporte.</p>
+}
+
+@code {
+    private List<Incidencias> incidencias { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        incidencias = (await _incidenciasRepositorio.GetAllAsync()).ToList();
+    }
+
+    private async Task ImprimirReporte()
+    {
+        var reporteElement = await JSRuntime.InvokeAsync<IJSObjectReference>("eval", "document.getElementById('reporte')");
+
+        if (reporteElement != null)
+        {
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                var printWindow = window.open();
+                printWindow.document.write('<html><head><style>');
+                printWindow.document.write('table { width: 100%; border-collapse: collapse; }');
+                printWindow.document.write('th, td { border: 1px solid black; padding: 8px; text-align: left; font-family: Arial, sans-serif; }');
+                printWindow.document.write('body { font-family: Arial, sans-serif; margin: 20px; }');
+                printWindow.document.write('</style><title>Reporte de Incidencias</title></head><body>');
+                printWindow.document.write(document.getElementById('reporte').innerHTML);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            ");
+        }
+    }
+}
