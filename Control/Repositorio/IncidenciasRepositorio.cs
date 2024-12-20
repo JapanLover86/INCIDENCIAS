@@ -68,5 +68,29 @@ namespace Control.Repositorio
             }
             return incidencias;
         }
+
+        public async Task<bool> EliminarPorId(int id)
+        {
+            try
+            {
+                // Buscar la incidencia por su ID
+                var incidencia = await contextodb.incidencias.FindAsync(id);
+                if (incidencia != null)
+                {
+                    contextodb.incidencias.Remove(incidencia); // Eliminar la incidencia
+                    await contextodb.SaveChangesAsync();
+                    return true; // Indicar éxito
+                }
+                return false; // No se encontró la incidencia
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error en EliminarPorId: {ex.Message}");
+                throw;
+            }
+        }
+
+
+
     }
 }

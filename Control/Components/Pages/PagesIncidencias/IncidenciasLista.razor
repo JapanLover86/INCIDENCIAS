@@ -53,15 +53,15 @@ else
                             <tr>
                                 <td>@item.IdIncidencias</td>
                                 <td>@item.DescInc</td>
-                                <td>@item.FechaReporte.ToString("dd/MM/yyyy")</td>
-                                <td>@item.FechaSolucion.ToString("dd/MM/yyyy")</td>
-                                <td>@item.Roles.ToString()</td>
-                                <td>@item.Razones.ToString()</td>
+                                <td>@item.FechaReporte.ToString("dd/MM/yyyy") ?? "N/A"</td>
+                                <td>@item.FechaSolucion.ToString("dd/MM/yyyy") ?? "N/A"</td>
+                                <td>@item.Roles ?? "Sin rol"</td>
+                                <td>@item.Razones ?? "Sin razón"</td>
                                 <td>
                                     <a href="@($"incidencias/modificar/{item.IdIncidencias}")" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modificar
                                     </a>
-                                    <button class="btn btn-danger" @onclick="() => EliminarIncidenciaPorId(item.IdIncidencias)">
+                                    <button class="btn btn-danger" @onclick="() => ConfirmarEliminar(item.IdIncidencias)">
                                         <i class="bi bi-trash"></i> Eliminar
                                     </button>
                                 </td>
@@ -106,59 +106,37 @@ else
         }
     }
 
-    private async Task EliminarIncidencia(Incidencias incidencia)
+    private async Task ConfirmarEliminar(int id)
     {
         bool confirmado = await Notificacion.Confirmar("¿Está seguro de que desea eliminar esta incidencia?");
         if (confirmado)
         {
-            try
-            {
-                // Intentar eliminar la incidencia usando el método del repositorio
-                var resultado = await _incidenciasRepositorio.Eliminar(incidencia);
-
-                if (resultado != null)
-                {
-                    // Si fue exitoso, eliminarla también de la lista local
-                    incidencias = incidencias.Where(i => i.IdIncidencias != incidencia.IdIncidencias).ToList();
-                    await Notificacion.Exito("Incidencia eliminada correctamente.");
-                }
-                else
-                {
-                    await Notificacion.Error("No se pudo eliminar la incidencia.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error al eliminar incidencia: {ex.Message}");
-                await Notificacion.Error("Ocurrió un error al eliminar la incidencia.");
-            }
+            await EliminarIncidencia(id);
         }
     }
 
-
-    private async Task EliminarIncidenciaPorId(int id)
+    private async Task EliminarIncidencia(int id)
     {
         try
         {
-            // Buscar la incidencia por su ID
-            var incidencia = await _incidenciasRepositorio.GetOne(id);
-            if (incidencia != null)
+            // Usar el método EliminarPorId para eliminar la incidencia
+            var resultado = await _incidenciasRepositorio.EliminarPorId(id);
+
+            if (resultado)
             {
-                // Llamar al método para eliminar la incidencia encontrada
-                await EliminarIncidencia(incidencia);
+                // Actualizar la lista local de incidencias
+                incidencias = incidencias.Where(i => i.IdIncidencias != id).ToList();
+                await Notificacion.Exito("Incidencia eliminada correctamente.");
             }
             else
             {
-                // Mostrar error si no se encontró la incidencia
-                await Notificacion.Error("No se encontró la incidencia para eliminar.");
+                await Notificacion.Error("No se pudo eliminar la incidencia.");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al buscar o eliminar la incidencia: {ex.Message}");
-            await Notificacion.Error("Ocurrió un error al procesar la eliminación.");
+            Console.WriteLine($"Error al eliminar incidencia: {ex.Message}");
+            await Notificacion.Error("Ocurrió un error al eliminar la incidencia.");
         }
     }
-
-
 }
