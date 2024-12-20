@@ -13,16 +13,19 @@
     <div class="form-group">
         <label for="descInc">Descripción</label>
         <InputText id="descInc" class="form-control" @bind-Value="incidencia.DescInc" />
+        <small class="form-text text-muted">Ingrese una descripción para la incidencia</small>
     </div>
 
     <div class="form-group">
         <label for="fechaReporte">Fecha de Reporte</label>
         <InputDate id="fechaReporte" class="form-control" @bind-Value="incidencia.FechaReporte" />
+        <small class="form-text text-muted">Seleccione la fecha de reporte</small>
     </div>
 
     <div class="form-group">
         <label for="fechaSolucion">Fecha de Solución</label>
         <InputDate id="fechaSolucion" class="form-control" @bind-Value="incidencia.FechaSolucion" />
+        <small class="form-text text-muted">Seleccione la fecha en que se espera la solución</small>
     </div>
 
     <button type="submit" class="btn btn-primary">Modificar</button>
@@ -35,26 +38,14 @@
 
     protected override async Task OnInitializedAsync()
     {
-        try
+        // Obtener la incidencia por el ID antes de mostrar el formulario
+        var incidencias = await _incidenciasRepositorio.GetAllAsync();
+        incidencia = incidencias.FirstOrDefault(p => p.IdIncidencias == id);
+
+        // Si la incidencia no existe, redirigir al listado de incidencias
+        if (incidencia == null)
         {
-            if (incidencia != null)
-            {
-                Console.WriteLine($"Modificando incidencia: {incidencia.DescInc}, {incidencia.FechaReporte}, {incidencia.FechaSolucion}");
-                await _incidenciasRepositorio.Modificar(incidencia);
-                Console.WriteLine("Incidencia modificada correctamente.");
-
-                // Mostrar notificación de éxito
-                await Notificacion.ShowSuccessAsync("La incidencia se ha modificado correctamente", "Éxito");
-
-                NavigationManager.NavigateTo("/incidencias");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al modificar la incidencia: {ex.Message}");
-
-            // Mostrar notificación de error
-            await Notificacion.ShowErrorAsync("Ocurrió un error al modificar la incidencia", "Error");
+            NavigationManager.NavigateTo("/incidencias");
         }
     }
 
@@ -64,20 +55,19 @@
         {
             if (incidencia != null)
             {
-                Console.WriteLine($"Modificando incidencia: {incidencia.DescInc}, {incidencia.FechaReporte}, {incidencia.FechaSolucion}");
                 await _incidenciasRepositorio.Modificar(incidencia);
-                Console.WriteLine("Incidencia modificada correctamente.");
+                await Notificacion.ShowSuccessAsync("La incidencia se ha modificado correctamente", "Éxito");
                 NavigationManager.NavigateTo("/incidencias");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al modificar la incidencia: {ex.Message}");
+            await Notificacion.ShowErrorAsync("Ocurrió un error al modificar la incidencia", "Error");
         }
     }
 
     private void Cancelar()
     {
-        NavigationManager.NavigateTo("/incidencias");  // Redirigir al listado si se cancela
+        NavigationManager.NavigateTo("/incidencias");
     }
 }
