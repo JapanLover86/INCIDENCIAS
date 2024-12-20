@@ -33,7 +33,7 @@ else
                 </div>
             </div>
 
-            @if (incidencias != null && incidencias.Any())
+            @if (pagedIncidencias != null && pagedIncidencias.Any())
             {
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -48,7 +48,7 @@ else
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in incidencias)
+                        @foreach (var item in pagedIncidencias)
                         {
                             <tr>
                                 <td>@item.IdIncidencias</td>
@@ -74,6 +74,13 @@ else
             {
                 <p class="text-center">No hay incidencias disponibles</p>
             }
+
+            <!-- Controles de Paginación -->
+            <div class="d-flex justify-content-between">
+                <button @onclick="PreviousPage" class="btn btn-secondary" disabled="@(!HasPreviousPage)">Anterior</button>
+                <span> Página @currentPage de @totalPages </span>
+                <button @onclick="NextPage" class="btn btn-secondary" disabled="@(!HasNextPage)">Siguiente</button>
+            </div>
         </div>
     </div>
 }
@@ -82,7 +89,11 @@ else
     private bool Cargando { get; set; } = false;
 
     private List<Incidencias> incidencias { get; set; } = new();
+    private List<Incidencias> pagedIncidencias { get; set; } = new();
 
+    private int currentPage { get; set; } = 1;
+    private int pageSize { get; set; } = 5;  // Número de elementos por página
+    private int totalPages { get; set; } = 1;  // Total de páginas
     private string MensajeError { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -97,15 +108,8 @@ else
         try
         {
             incidencias = (await _incidenciasRepositorio.GetAllAsync()).ToList();
-            MensajeError = string.Empty;
-            if (incidencias == null || !incidencias.Any())
-            {
-                Console.WriteLine("No se encontraron incidencias.");
-            }
-            else
-            {
-                Console.WriteLine($"Incidencias cargadas: {incidencias.Count}");
-            }
+            totalPages = (int)Math.Ceiling((double)incidencias.Count / pageSize);  // Calcular el total de páginas
+            LoadPagedData();  // Cargar las incidencias de la página actual
             MensajeError = string.Empty;
         }
         catch (Exception ex)
@@ -114,6 +118,32 @@ else
             MensajeError = "Ocurrió un error al cargar las incidencias. Intente nuevamente.";
         }
     }
+
+    private void LoadPagedData()
+    {
+        pagedIncidencias = incidencias.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+    }
+
+    private void PreviousPage()
+    {
+        if (currentPage > 1)
+        {
+            currentPage--;
+            LoadPagedData();
+        }
+    }
+
+    private void NextPage()
+    {
+        if (currentPage < totalPages)
+        {
+            currentPage++;
+            LoadPagedData();
+        }
+    }
+
+    private bool HasPreviousPage => currentPage > 1;
+    private bool HasNextPage => currentPage < totalPages;
 
     private async Task ConfirmarEliminar(int id)
     {
@@ -128,13 +158,12 @@ else
     {
         try
         {
-            // Usar el método EliminarPorId para eliminar la incidencia
             var resultado = await _incidenciasRepositorio.EliminarPorId(id);
 
             if (resultado)
             {
-                // Actualizar la lista local de incidencias
                 incidencias = incidencias.Where(i => i.IdIncidencias != id).ToList();
+                LoadPagedData();  // Recargar la página actual después de eliminar
                 await Notificacion.Exito("Incidencia eliminada correctamente.");
             }
             else
