@@ -1,4 +1,5 @@
-﻿@page "/incidencias/modificar/{id:int}"
+﻿
+@page "/incidencias/modificar/{id:int}"
 @inject IIncidenciasRepositorio _incidenciasRepositorio
 @inject NavigationManager NavigationManager
 @inject Notificacion Notificacion
@@ -36,20 +37,24 @@
     {
         try
         {
-            // Recupera todos los productos
-            var incidencias = await _incidenciasRepositorio.GetAll();
-
-            // Filtra el producto específico por su Id
-            incidencia = incidencias.FirstOrDefault(p => p.IdIncidencias == id);
-
-            if (incidencia == null)
+            if (incidencia != null)
             {
-                Console.WriteLine($"No se encontró el producto con Id {id}");
+                Console.WriteLine($"Modificando incidencia: {incidencia.DescInc}, {incidencia.FechaReporte}, {incidencia.FechaSolucion}");
+                await _incidenciasRepositorio.Modificar(incidencia);
+                Console.WriteLine("Incidencia modificada correctamente.");
+
+                // Mostrar notificación de éxito
+                await Notificacion.ShowSuccessAsync("La incidencia se ha modificado correctamente", "Éxito");
+
+                NavigationManager.NavigateTo("/incidencias");
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error al cargar el producto: {ex.Message}");
+            Console.WriteLine($"Error al modificar la incidencia: {ex.Message}");
+
+            // Mostrar notificación de error
+            await Notificacion.ShowErrorAsync("Ocurrió un error al modificar la incidencia", "Error");
         }
     }
 

@@ -32,7 +32,7 @@
             <!-- Dropdown para Roles -->
             <div class="mb-3">
                 <label class="form-label">Rol</label>
-                <select class="form-select" @bind="nuevaIncidencia.Roles">
+                <select class="form-select" @bind="nuevaIncidencia.Rol">
                     @foreach (var rol in Enum.GetValues(typeof(Rol)))
                     {
                         <option value="@rol">@rol</option>
@@ -43,7 +43,7 @@
             <!-- Dropdown para Razón de Incidencia -->
             <div class="mb-3">
                 <label class="form-label">Razón de Incidencia</label>
-                <select class="form-select" @bind="nuevaIncidencia.Razones">
+                <select class="form-select" @bind="nuevaIncidencia.Razon">
                     @foreach (var razon in Enum.GetValues(typeof(RazonIncidencia)))
                     {
                         <option value="@razon">@razon</option>

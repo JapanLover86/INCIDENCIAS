@@ -57,7 +57,7 @@ public class AplicacionDbContext : DbContext
 
         modelBuilder.Entity<Incidencias>().HasData(
                     
-            new Incidencias { IdIncidencias = 78434, DescInc = "Este reporte fue dado por un error en el sistema", FechaReporte = new DateTime(2024, 12, 12), FechaSolucion = new DateTime(2024, 12, 27), Razones = RazonIncidencia.Mantenimiento, Roles= Rol.JorgeVega }
+            new Incidencias { IdIncidencias = 56874, DescInc = "Este reporte fue dado por un error en el sistema de acceso", FechaReporte = new DateTime(2024, 12, 12), FechaSolucion = new DateTime(2024, 12, 27), Razon = "Otro", Rol= "Noa" }
 
 
            );

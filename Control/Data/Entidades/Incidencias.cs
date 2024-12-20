@@ -20,10 +20,10 @@ namespace Control.Data.Entidades
         public DateTime FechaSolucion { get; set; }
 
         [Required(ErrorMessage = "El rol es obligatorio")]
-        public Rol Roles { get; set; }
+        public string Rol { get; set; }
 
         [Required(ErrorMessage = "La razón es obligatoria")]
-        public RazonIncidencia Razones { get; set; }
+        public string Razon { get; set; }
 
         // Constructor para inicializar la fecha de solución
         public Incidencias()

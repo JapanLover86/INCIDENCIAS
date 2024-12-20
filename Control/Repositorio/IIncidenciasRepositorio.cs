@@ -14,7 +14,7 @@ namespace Control.Repositorio
         public Task<Incidencias> GetOne(int id);
 
         public Task<bool> EliminarPorId(int id);
-        public Task< IEnumerable<Incidencias>> GetAll();
+        public Task< IEnumerable<Incidencias>> GetAllAsync();
 
 
     }

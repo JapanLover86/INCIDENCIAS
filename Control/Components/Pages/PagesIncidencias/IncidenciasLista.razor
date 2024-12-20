@@ -55,8 +55,8 @@ else
                                 <td>@item.DescInc</td>
                                 <td>@item.FechaReporte.ToString("dd/MM/yyyy") ?? "N/A"</td>
                                 <td>@item.FechaSolucion.ToString("dd/MM/yyyy") ?? "N/A"</td>
-                                <td>@item.Roles ?? "Sin rol"</td>
-                                <td>@item.Razones ?? "Sin razón"</td>
+                                <td>@(item.Rol?.ToString() ?? "Sin rol")</td>
+                                <td>@(item.Razon?.ToString() ?? "Sin razón")</td>
                                 <td>
                                     <a href="@($"incidencias/modificar/{item.IdIncidencias}")" class="btn btn-primary">
                                         <i class="bi bi-pencil-square"></i> Modificar
@@ -96,7 +96,16 @@ else
     {
         try
         {
-            incidencias = (await _incidenciasRepositorio.GetAll()).ToList();
+            incidencias = (await _incidenciasRepositorio.GetAllAsync()).ToList();
+            MensajeError = string.Empty;
+            if (incidencias == null || !incidencias.Any())
+            {
+                Console.WriteLine("No se encontraron incidencias.");
+            }
+            else
+            {
+                Console.WriteLine($"Incidencias cargadas: {incidencias.Count}");
+            }
             MensajeError = string.Empty;
         }
         catch (Exception ex)

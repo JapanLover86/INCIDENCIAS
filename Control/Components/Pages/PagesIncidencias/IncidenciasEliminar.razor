@@ -17,7 +17,7 @@
     protected override async Task OnInitializedAsync()
     {
         // Obtener la incidencia por el ID
-        var incidencias = await _incidenciasRepositorio.GetAll();
+        var incidencias = await _incidenciasRepositorio.GetAllAsync();
         incidencia = incidencias.FirstOrDefault(p => p.IdIncidencias == id);
 
         // Si la incidencia no existe, redirigir al listado de incidencias.

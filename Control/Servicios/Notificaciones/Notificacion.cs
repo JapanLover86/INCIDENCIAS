@@ -11,16 +11,16 @@ namespace AcmeSacBlazorDemoWeb.Servicios.Notificaciones
             _jsRuntime = jsRuntime;
         }
 
-        public void ShowSuccess(string message, string title)
+        public async Task ShowSuccessAsync(string message, string title)
         {
             var js = $"toastr.success('{message}', '{title}');";
-            _jsRuntime.InvokeVoidAsync("eval", js);
+            await _jsRuntime.InvokeVoidAsync("toastr.success", message, title);
         }
 
-        public void ShowError(string message, string title)
+        public async Task ShowErrorAsync(string message, string title)
         {
             var js = $"toastr.error('{message}', '{title}');";
-            _jsRuntime.InvokeVoidAsync("eval", js);
+            await _jsRuntime.InvokeVoidAsync("toastr.error", message, title);
         }
 
         public Task<bool> Confirmar(string mensaje)

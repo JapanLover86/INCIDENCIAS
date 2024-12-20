@@ -32,10 +32,11 @@ namespace Control.Repositorio
             return incidencias;
         }
 
-        public async Task<IEnumerable<Incidencias>> GetAll()
+        public async Task<IEnumerable<Incidencias>> GetAllAsync()
         {
             try
             {
+                
                 return await contextodb.incidencias.ToListAsync();
             }
             catch (Exception ex)
@@ -60,8 +61,8 @@ namespace Control.Repositorio
                 incidenciaExistente.DescInc = incidencias.DescInc;
                 incidenciaExistente.FechaReporte = incidencias.FechaReporte;
                 incidenciaExistente.FechaSolucion = incidencias.FechaSolucion;
-                incidenciaExistente.Roles = incidencias.Roles;
-                incidenciaExistente.Razones = incidencias.Razones;
+                incidenciaExistente.Rol = incidencias.Rol;
+                incidenciaExistente.Razon = incidencias.Razon;
 
                 await contextodb.SaveChangesAsync();
                 return incidenciaExistente;
